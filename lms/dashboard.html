@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Dashboard - London UK Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+  <link rel="stylesheet" href="lms.css?v=20260915b">
+  <link rel="icon" type="image/png" href="../favicon.png">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="lms-app">
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo-area">
+      <a href="../index.html" class="sidebar-logo-link" title="Return to Main Website"><img src="../lauk-logo.png?v=2" width="1278" height="240" alt="LAUK" class="sidebar-logo" onerror="this.style.display='none';document.getElementById('sidebarMark').style.display='flex'"></a>
+      <div id="sidebarMark" style="display:none;align-items:center;gap:10px;">
+        <div class="sidebar-brand-mark">L</div>
+        <div><div class="sidebar-brand-name">London UK</div><div class="sidebar-brand-sub">ACADEMY</div></div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-section">MAIN</div>
+      <div class="nav-item active" data-page="dashboard" onclick="handleNavClick(this, 'dashboard', function(){ openSection('dashboard'); })">
+        <span class="nav-item-icon">📊</span> Overview
+      </div>
+      <div class="nav-item" data-page="courses" onclick="handleNavClick(this, 'courses', function(){ openSection('courses'); })">
+        <span class="nav-item-icon">📚</span> My Courses
+      </div>
+      <div class="nav-item" data-page="grades" onclick="handleNavClick(this, 'grades', function(){ openModal('gradesModal'); })">
+        <span class="nav-item-icon">📈</span> Grades & Progress
+      </div>
+      <div class="nav-item" data-page="lessons" onclick="handleNavClick(this, 'lessons', function(){ window.location='course.html?id=1'; })">
+        <span class="nav-item-icon">▶️</span> Current Lesson
+      </div>
+
+      <div class="sidebar-nav-section">LEARNING TOOLS</div>
+      <div class="nav-item" data-page="assignments" onclick="handleNavClick(this, 'assignments', function(){ openModal('assignmentsModal'); })">
+        <span class="nav-item-icon">📝</span> Assignments <span class="nav-badge">2</span>
+      </div>
+      <div class="nav-item" data-page="resources" onclick="handleNavClick(this, 'resources', function(){ openModal('resourcesModal'); })">
+        <span class="nav-item-icon">📁</span> Course Resources
+      </div>
+      <div class="nav-item" data-page="messages" onclick="handleNavClick(this, 'messages', function(){ openModal('messagesModal'); })">
+        <span class="nav-item-icon">💬</span> Tutor Chat <span class="nav-badge">1</span>
+      </div>
+      <div class="nav-item" data-page="settings" onclick="handleNavClick(this, 'settings', function(){ openModal('settingsModal'); })">
+        <span class="nav-item-icon">⚙️</span> Settings
+      </div>
+    </nav>
+
+    <div class="sidebar-user" data-logout title="Click to Log Out" style="cursor:pointer;">
+      <div class="sidebar-avatar" data-user-avatar>ST</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" data-user-name>Sarah Thompson</div>
+        <div class="sidebar-user-role" data-user-role>Student</div>
+      </div>
+      <div style="font-size:1.1rem;color:#8593AC;margin-left:auto;">🚪</div>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show')">☰</button>
+      
+      <div class="topbar-search">
+        <span class="topbar-search-icon">🔍</span>
+        <input type="text" id="dashboardSearch" placeholder="Search courses, modules, resources..." onkeyup="filterDashboard(this.value)">
+      </div>
+
+      <div class="topbar-actions">
+        <!-- Notification Dropdown -->
+        <div class="topbar-icon-btn" id="notifBtn" style="position:relative;" title="Notifications">
+          🔔
+          <span class="notif-dot"></span>
+          <div class="notif-panel" id="notifPanel">
+            <div class="notif-panel-header">
+              <span>Notifications</span>
+              <span style="font-size:.78rem;color:var(--gold);cursor:pointer;" onclick="markAllNotificationsRead()">Mark all as read</span>
+            </div>
+            <div id="notifItemsContainer">
+              <div class="notif-item" onclick="openModal('assignmentsModal')">
+                <div class="notif-dot-small"></div>
+                <div><div class="notif-text">Assignment <strong>Unit 2 Draft</strong> due in 5 days</div><div class="notif-time">2 hours ago</div></div>
+              </div>
+              <div class="notif-item" onclick="openModal('messagesModal')">
+                <div class="notif-dot-small"></div>
+                <div><div class="notif-text">Tutor <strong>Emma Clarke</strong> sent feedback on Unit 1</div><div class="notif-time">1 day ago</div></div>
+              </div>
+              <div class="notif-item" onclick="openModal('certificatesModal')">
+                <div class="notif-dot-small" style="background:var(--success);"></div>
+                <div><div class="notif-text">New certificate issued for <strong>Level 3 Diploma</strong></div><div class="notif-time">3 days ago</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Profile Dropdown -->
+        <div style="position:relative;">
+          <div class="topbar-avatar" id="userMenuBtn" onclick="toggleUserDropdown(event)" style="cursor:pointer;" data-user-avatar title="User Account Menu">ST</div>
+          <div class="topbar-user-dropdown" id="userDropdown">
+            <div class="dropdown-item" onclick="openModal('settingsModal')">⚙️ Profile & Settings</div>
+            <div class="dropdown-item" onclick="openModal('certificatesModal')">📜 My Certificates</div>
+            <div class="dropdown-item" onclick="openModal('assignmentsModal')">📝 My Assignments</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" id="adminDashLink" style="display:none;" onclick="window.location='admin.html'">⚙️ Admin Dashboard</div>
+            <div class="dropdown-item" style="color:var(--danger);" data-logout>🚪 Log Out</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- DASHBOARD CONTAINER -->
+    <div class="container" style="padding-block:32px;">
+
+      <!-- WELCOME HERO -->
+      <div class="dashboard-hero">
+        <div class="dashboard-hero-title">Welcome back, <span id="welcomeName">Student</span>! 👋</div>
+        <div class="dashboard-hero-sub">You have 2 pending assignments and 1 unread message from your tutor.</div>
+        <div class="dashboard-hero-actions">
+          <button class="btn-primary" onclick="window.location='course.html?id=1'">▶ Continue Learning</button>
+          <button class="btn-secondary" onclick="openSection('courses')">Browse Courses</button>
+          <button class="btn-secondary" onclick="openModal('resourcesModal')">📁 Course Handbooks</button>
+        </div>
+      </div>
+
+      <!-- STATS GRID -->
+      <div class="stats-grid">
+        <div class="stat-card" style="cursor:pointer;" onclick="openSection('courses')" title="Click to view Enrolled Courses">
+          <div class="stat-card-top">
+            <div class="stat-card-icon" style="background:rgba(201,168,76,.15);color:var(--gold);">📚</div>
+            <span class="stat-card-change up">Active</span>
+          </div>
+          <div class="stat-card-value" id="statEnrolled">3</div>
+          <div class="stat-card-label">Enrolled Courses</div>
+        </div>
+
+        <div class="stat-card" style="cursor:pointer;" onclick="openModal('hoursModal')" title="Click to view Learning Hours Breakdown">
+          <div class="stat-card-top">
+            <div class="stat-card-icon" style="background:rgba(52,199,123,.15);color:var(--success);">⏱️</div>
+            <span class="stat-card-change up">+12h this wk</span>
+          </div>
+          <div class="stat-card-value" id="statHours">48</div>
+          <div class="stat-card-label">Hours Completed</div>
+        </div>
+
+        <div class="stat-card" style="cursor:pointer;" onclick="openModal('certificatesModal')" title="Click to view Earned Certificates">
+          <div class="stat-card-top">
+            <div class="stat-card-icon" style="background:rgba(78,157,255,.15);color:var(--info);">📜</div>
+            <span class="stat-card-change up">Verified</span>
+          </div>
+          <div class="stat-card-value" id="statCerts">1</div>
+          <div class="stat-card-label">Certificates Earned</div>
+        </div>
+
+        <div class="stat-card" style="cursor:pointer;" onclick="openModal('gradesModal')" title="Click to view Grades Transcript">
+          <div class="stat-card-top">
+            <div class="stat-card-icon" style="background:rgba(245,166,35,.15);color:var(--warning);">🏆</div>
+            <span class="stat-card-change up">Top 5%</span>
+          </div>
+          <div class="stat-card-value" id="statGrade">88%</div>
+          <div class="stat-card-label">Average Grade</div>
+        </div>
+      </div>
+
+      <!-- MY COURSES SECTION -->
+      <div id="my-courses" style="scroll-margin-top:90px;margin-bottom:32px;">
+        <div class="section-header">
+          <div>
+            <div class="section-header-title">My Courses</div>
+            <div class="section-header-sub">Continue where you left off</div>
+          </div>
+          <span class="btn-view-all" style="cursor:pointer;" onclick="window.location='../index.html#courses'">Browse all courses →</span>
+        </div>
+        <div class="courses-grid" id="coursesGrid">
+          <!-- injected by JS -->
+        </div>
+      </div>
+
+      <!-- BOTTOM ROW -->
+      <div class="two-col-wide">
+
+        <!-- Activity Feed -->
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-header-title">Recent Activity</div>
+              <div class="section-header-sub">Your latest learning milestones</div>
+            </div>
+            <span class="btn-view-all" style="cursor:pointer;" onclick="openModal('activityModal')">View all →</span>
+          </div>
+          <div class="activity-list" id="activityList"></div>
+        </div>
+
+        <!-- Upcoming Deadlines -->
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-header-title">Upcoming Deadlines</div>
+              <div class="section-header-sub">Assessments & submission dates</div>
+            </div>
+            <span class="btn-view-all" style="cursor:pointer;" onclick="openModal('assignmentsModal')">Submit Draft →</span>
+          </div>
+          <div class="deadline-list" id="deadlineList"></div>
+        </div>
+
+      </div>
+
+      <!-- Overall Progress Ring -->
+      <div class="card" style="margin-top:28px;">
+        <div class="section-header">
+          <div>
+            <div class="section-header-title">Overall Learning Progress</div>
+            <div class="section-header-sub">Aggregate progress across enrolled qualifications</div>
+          </div>
+          <span class="btn-view-all" style="cursor:pointer;" onclick="openModal('gradesModal')">Detailed Report →</span>
+        </div>
+        <div style="display:flex;gap:40px;align-items:center;flex-wrap:wrap;">
+          <div id="overallRing" class="ring-container" style="width:140px;height:140px;flex-shrink:0;"></div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:14px;" id="progressBars"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ==================== MODAL DIALOGS ==================== -->
+
+<!-- 1. GRADES MODAL -->
+<div class="lms-modal-backdrop" id="gradesModal">
+  <div class="lms-modal">
+    <div class="lms-modal-header">
+      <div class="lms-modal-title">📈 Academic Grades & Transcript</div>
+      <button class="lms-modal-close" onclick="closeModal('gradesModal')">✕</button>
+    </div>
+    <div class="lms-modal-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:24px;">
+        <div style="background:rgba(255,255,255,.04);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,.08);text-align:center;">
+          <div style="font-size:1.6rem;font-weight:700;color:var(--gold);">88%</div>
+          <div style="font-size:.78rem;color:var(--slate-light);">Overall Pass Average</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,.08);text-align:center;">
+          <div style="font-size:1.6rem;font-weight:700;color:var(--success);">Pass with Merit</div>
+          <div style="font-size:.78rem;color:var(--slate-light);">Current Academic Status</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,.08);text-align:center;">
+          <div style="font-size:1.6rem;font-weight:700;color:var(--info);">4 / 4</div>
+          <div style="font-size:.78rem;color:var(--slate-light);">Units Evaluated</div>
+        </div>
+      </div>
+
+      <h4 style="color:#fff;margin-bottom:12px;">Evaluated Units & Assignment Marks</h4>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:rgba(255,255,255,.03);padding:14px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;">
+          <div><strong>Unit 1: Principles of Management & Leadership</strong><div style="font-size:.78rem;color:var(--slate-light);">Highfield L3MD • Evaluated by Emma Clarke</div></div>
+          <span style="background:rgba(52,199,123,.2);color:var(--success);padding:4px 12px;border-radius:6px;font-weight:700;">92% (Merit)</span>
+        </div>
+        <div style="background:rgba(255,255,255,.03);padding:14px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;">
+          <div><strong>Unit 2: Managing Team Performance & KPIs</strong><div style="font-size:.78rem;color:var(--slate-light);">Highfield L3MD • Evaluated by Dr. James Wilson</div></div>
+          <span style="background:rgba(52,199,123,.2);color:var(--success);padding:4px 12px;border-radius:6px;font-weight:700;">85% (Pass)</span>
+        </div>
+        <div style="background:rgba(255,255,255,.03);padding:14px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;">
+          <div><strong>Unit 3: Understanding Education & Training (AET)</strong><div style="font-size:.78rem;color:var(--slate-light);">Highfield L3 AET • Evaluated by Sarah Jenkins</div></div>
+          <span style="background:rgba(201,168,76,.2);color:var(--gold);padding:4px 12px;border-radius:6px;font-weight:700;">87% (Distinction)</span>
+        </div>
+      </div>
+    </div>
+    <div class="lms-modal-footer">
+      <button class="btn-secondary" onclick="LMS.showToast('Official Transcript PDF downloaded!', 'success')">📜 Download Official Transcript</button>
+      <button class="btn-primary" onclick="closeModal('gradesModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 2. ASSIGNMENTS MODAL -->
+<div class="lms-modal-backdrop" id="assignmentsModal">
+  <div class="lms-modal">
+    <div class="lms-modal-header">
+      <div class="lms-modal-title">📝 Course Assignments & Submissions</div>
+      <button class="lms-modal-close" onclick="closeModal('assignmentsModal')">✕</button>
+    </div>
+    <div class="lms-modal-body">
+      <h4 style="color:#fff;margin-bottom:12px;">Pending & Upcoming Submissions</h4>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+        <div style="background:rgba(255,255,255,.03);padding:14px;border-radius:10px;border-left:4px solid var(--warning);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <strong style="color:#fff;">Unit 2 Portfolio & Reflective Essay</strong>
+              <div style="font-size:.8rem;color:var(--slate-light);margin-top:2px;">Level 3 Management Diploma • Max 2,500 words</div>
+            </div>
+            <span style="background:rgba(245,166,35,.2);color:var(--warning);font-size:.75rem;padding:3px 8px;border-radius:4px;font-weight:600;">Due 15 Sep</span>
+          </div>
+          <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
+            <input type="file" id="assignFile1" accept=".pdf,.doc,.docx,.odt,.txt,.pptx" style="display:none;" onchange="handleFileSelected(this, 'fileLabel1')">
+            <button class="btn-secondary" style="font-size:.8rem;padding:6px 12px;" onclick="document.getElementById('assignFile1').click()">📁 Choose File</button>
+            <span id="fileLabel1" style="font-size:.8rem;color:var(--slate-light);">No file chosen</span>
+            <button class="btn-primary" style="font-size:.8rem;padding:6px 12px;margin-left:auto;" onclick="submitAssignment('Unit 2 Portfolio', 'fileLabel1')">Submit Draft</button>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,.03);padding:14px;border-radius:10px;border-left:4px solid var(--info);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <strong style="color:#fff;">Micro-teaching Lesson Plan</strong>
+              <div style="font-size:.8rem;color:var(--slate-light);margin-top:2px;">Level 3 Award in Education & Training</div>
+            </div>
+            <span style="background:rgba(78,157,255,.2);color:var(--info);font-size:.75rem;padding:3px 8px;border-radius:4px;font-weight:600;">Due 22 Sep</span>
+          </div>
+          <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
+            <input type="file" id="assignFile2" accept=".pdf,.doc,.docx,.odt,.txt,.pptx" style="display:none;" onchange="handleFileSelected(this, 'fileLabel2')">
+            <button class="btn-secondary" style="font-size:.8rem;padding:6px 12px;" onclick="document.getElementById('assignFile2').click()">📁 Choose File</button>
+            <span id="fileLabel2" style="font-size:.8rem;color:var(--slate-light);">No file chosen</span>
+            <button class="btn-primary" style="font-size:.8rem;padding:6px 12px;margin-left:auto;" onclick="submitAssignment('Micro-teaching Plan', 'fileLabel2')">Submit Draft</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="lms-modal-footer">
+      <button class="btn-primary" onclick="closeModal('assignmentsModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 3. RESOURCES MODAL -->
+<div class="lms-modal-backdrop" id="resourcesModal">
+  <div class="lms-modal">
+    <div class="lms-modal-header">
+      <div class="lms-modal-title">📁 Course Resources & Handbooks</div>
+      <button class="lms-modal-close" onclick="closeModal('resourcesModal')">✕</button>
+    </div>
+    <div class="lms-modal-body">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:rgba(255,255,255,.03);padding:12px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;">
+          <div><strong>L3 Management Qualification Handbook (PDF)</strong><div style="font-size:.78rem;color:var(--slate-light);">Highfield Specification • 2.4 MB</div></div>
+          <button class="btn-secondary" style="padding:6px 12px;font-size:.8rem;" onclick="downloadResource('L3_Management_Handbook.pdf')">📥 Download</button>
+        </div>
+        <div style="background:rgba(255,255,255,.03);padding:12px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;">
+          <div><strong>Assignment Template & Referencing Guide</strong><div style="font-size:.78rem;color:var(--slate-light);">Harvard Referencing Standard • 850 KB</div></div>
+          <button class="btn-secondary" style="padding:6px 12px;font-size:.8rem;" onclick="downloadResource('Assignment_Template.docx')">📥 Download</button>
+        </div>
+        <div style="background:rgba(255,255,255,.03);padding:12px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;">
+          <div><strong>Level 3 AET Micro-Teach Assessment Rubric</strong><div style="font-size:.78rem;color:var(--slate-light);">Assessment Criteria • 1.1 MB</div></div>
+          <button class="btn-secondary" style="padding:6px 12px;font-size:.8rem;" onclick="downloadResource('AET_Microteach_Rubric.pdf')">📥 Download</button>
+        </div>
+      </div>
+    </div>
+    <div class="lms-modal-footer">
+      <button class="btn-primary" onclick="closeModal('resourcesModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 4. MESSAGES / TUTOR CHAT MODAL -->
+<div class="lms-modal-backdrop" id="messagesModal">
+  <div class="lms-modal" style="max-width:650px;">
+    <div class="lms-modal-header">
+      <div class="lms-modal-title">💬 Tutor Support Chat</div>
+      <button class="lms-modal-close" onclick="closeModal('messagesModal')">✕</button>
+    </div>
+    <div class="lms-modal-body" style="padding:16px;">
+      <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:16px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--gold);color:#0B132B;display:flex;align-items:center;justify-content:center;font-weight:700;">EC</div>
+        <div>
+          <strong style="color:#fff;">Emma Clarke</strong>
+          <div style="font-size:.78rem;color:var(--success);">● Active Course Tutor • L3 Management</div>
+        </div>
+      </div>
+      
+      <div id="chatHistory" style="height:250px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:6px;">
+        <div style="background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.2);padding:10px 14px;border-radius:12px;max-width:80%;align-self:flex-start;">
+          <div style="font-size:.78rem;color:var(--gold);font-weight:600;margin-bottom:2px;">Emma Clarke</div>
+          Hello! Excellent work on your Unit 1 quiz. Let me know if you need any assistance preparing your Unit 2 draft!
+        </div>
+      </div>
+
+      <div style="margin-top:16px;display:flex;gap:10px;">
+        <input type="text" id="chatInput" maxlength="1000" placeholder="Type your message to Emma Clarke..." style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;color:#fff;" onkeydown="if(event.key==='Enter') sendChatMessage()">
+        <button class="btn-primary" onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. SETTINGS MODAL -->
+<div class="lms-modal-backdrop" id="settingsModal">
+  <div class="lms-modal">
+    <div class="lms-modal-header">
+      <div class="lms-modal-title">⚙️ Student Profile & Settings</div>
+      <button class="lms-modal-close" onclick="closeModal('settingsModal')">✕</button>
+    </div>
+    <form onsubmit="saveUserSettings(event)">
+      <div class="lms-modal-body">
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" style="color:var(--slate-light);font-size:.82rem;margin-bottom:4px;display:block;">Full Name</label>
+          <input type="text" id="setFullName" maxlength="80" autocomplete="name" class="form-input" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:10px;border-radius:8px;color:#fff;" required>
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" style="color:var(--slate-light);font-size:.82rem;margin-bottom:4px;display:block;">Email Address</label>
+          <input type="email" id="setEmail" maxlength="120" autocomplete="email" class="form-input" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:10px;border-radius:8px;color:#fff;" required>
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" style="color:var(--slate-light);font-size:.82rem;margin-bottom:4px;display:block;">Notification Preferences</label>
+          <label style="display:flex;align-items:center;gap:8px;color:#fff;font-size:.85rem;margin-bottom:6px;cursor:pointer;">
+            <input type="checkbox" checked> Email notifications for assignment due dates
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;color:#fff;font-size:.85rem;cursor:pointer;">
+            <input type="checkbox" checked> Tutor message alerts
+          </label>
+        </div>
+      </div>
+      <div class="lms-modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal('settingsModal')">Cancel</button>
+        <button type="submit" class="btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 6. CERTIFICATES MODAL -->
+<div class="lms-modal-backdrop" id="certificatesModal">
+  <div class="lms-modal">
+    <div class="lms-modal-header">
+      <div class="lms-modal-title">📜 Earned Certificates & Credentials</div>
+      <button class="lms-modal-close" onclick="closeModal('certificatesModal')">✕</button>
+    </div>
+    <div class="lms-modal-body">
+      <div style="background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);padding:16px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <strong style="color:var(--gold);font-size:1.05rem;">Level 3 Award in Education & Training</strong>
+          <div style="font-size:.8rem;color:var(--slate-light);margin-top:2px;">Issued by Highfield Qualifications • Cert #LAUK-88219</div>
+        </div>
+        <button class="btn-primary" style="padding:6px 12px;font-size:.8rem;" onclick="LMS.showToast('Certificate PDF downloaded!', 'success')">📜 Download PDF</button>
+      </div>
+    </div>
+    <div class="lms-modal-footer">
+      <button class="btn-primary" onclick="closeModal('certificatesModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 7. ACTIVITY LOG MODAL -->
+<div class="lms-modal-backdrop" id="activityModal">
+  <div class="lms-modal">
+    <div class="lms-modal-header">
+      <div class="lms-modal-title">📊 Full Activity Log</div>
+      <button class="lms-modal-close" onclick="closeModal('activityModal')">✕</button>
+    </div>
+    <div class="lms-modal-body">
+      <div class="activity-list" id="fullActivityLogList"></div>
+    </div>
+    <div class="lms-modal-footer">
+      <button class="btn-primary" onclick="closeModal('activityModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 8. HOURS BREAKDOWN MODAL -->
+<div class="lms-modal-backdrop" id="hoursModal">
+  <div class="lms-modal">
+    <div class="lms-modal-header">
+      <div class="lms-modal-title">⏱️ Learning Hours & Time Breakdown</div>
+      <button class="lms-modal-close" onclick="closeModal('hoursModal')">✕</button>
+    </div>
+    <div class="lms-modal-body">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><strong style="color:#fff;">Level 3 Management Diploma</strong><span>32 / 40 hours</span></div>
+          <div class="progress-bar-track" style="height:10px;"><div class="progress-bar-fill" style="width:80%;background:var(--gold);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><strong style="color:#fff;">Level 3 Award in Education & Training (AET)</strong><span>16 / 20 hours</span></div>
+          <div class="progress-bar-track" style="height:10px;"><div class="progress-bar-fill" style="width:80%;background:var(--success);"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="lms-modal-footer">
+      <button class="btn-primary" onclick="closeModal('hoursModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="lms.js?v=20260915b"></script>
+<script>
+function togglePasswordVisibility(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+    btn.title = 'Hide password';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁️';
+    btn.title = 'Show password';
+  }
+}
+
+const esc = LMS.escapeHtml;
+const session = LMS.requireAuth();
+if (session) {
+  LMS.setupSidebar('dashboard');
+
+  // Populate user data
+  document.getElementById('welcomeName').textContent = session.name;
+  document.getElementById('setFullName').value = session.name;
+  document.getElementById('setEmail').value = session.email;
+
+  // Show Admin link if admin role
+  if (session.role === 'admin') {
+    const adminLink = document.getElementById('adminDashLink');
+    if (adminLink) adminLink.style.display = 'flex';
+  }
+
+  // Enrolled courses
+  const enrolled = (session.enrolled && session.enrolled.length > 0) ? session.enrolled : [1, 2, 3];
+  const enrolledCourses = COURSES.filter(c => enrolled.includes(c.id));
+
+  // Render Courses Grid
+  renderCoursesGrid(enrolledCourses);
+
+  // Overall Stats & Progress
+  let totalProgSum = 0;
+  enrolledCourses.forEach(c => {
+    totalProgSum += LMS.getCourseProgress(c.id);
+  });
+  const avgProg = Math.round(totalProgSum / (enrolledCourses.length || 1));
+
+  countUp('statEnrolled', enrolledCourses.length);
+  countUp('statHours', 48);
+  countUp('statCerts', 1);
+  document.getElementById('statGrade').textContent = '88%';
+
+  // Overall Ring
+  LMS.createRing(document.getElementById('overallRing'), avgProg, 140, 12);
+
+  // Progress bars
+  const pbContainer = document.getElementById('progressBars');
+  pbContainer.innerHTML = enrolledCourses.map(c => {
+    const pct = LMS.getCourseProgress(c.id);
+    return `
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:6px;">
+          <span>${esc(c.title)}</span><span style="color:var(--gold);font-weight:700;">${pct}%</span>
+        </div>
+        <div class="progress-bar-track" style="height:8px;">
+          <div class="progress-bar-fill" style="width:0%;background:linear-gradient(90deg,${c.color},${c.color}aa)" data-target="${pct}"></div>
+        </div>
+      </div>`;
+  }).join('');
+  setTimeout(() => document.querySelectorAll('#progressBars .progress-bar-fill').forEach(b => b.style.width = b.dataset.target + '%'), 300);
+
+  // Activity Feed
+  const activities = [
+    { icon: '✅', bg: 'rgba(52,199,123,.15)', title: 'Completed: Introduction to Management', sub: 'Level 3 Management Diploma', time: '2h ago' },
+    { icon: '📝', bg: 'rgba(201,168,76,.15)', title: 'Submitted Unit 2 Assignment', sub: 'Level 3 AET', time: 'Yesterday' },
+    { icon: '🧠', bg: 'rgba(78,157,255,.15)', title: 'Quiz Passed - 87%', sub: 'Setting Objectives & KPIs', time: '2 days ago' },
+    { icon: '▶️', bg: 'rgba(245,166,35,.15)', title: 'Started: Leadership vs Management', sub: 'Level 3 Management Diploma', time: '3 days ago' },
+    { icon: '💬', bg: 'rgba(232,72,85,.15)', title: 'Tutor feedback received', sub: 'From Emma Clarke', time: '4 days ago' },
+  ];
+
+  document.getElementById('activityList').innerHTML = activities.map(a => `
+    <div class="activity-item" style="cursor:pointer;" onclick="openModal('activityModal')">
+      <div class="activity-icon" style="background:${a.bg};">${a.icon}</div>
+      <div class="activity-text">
+        <div class="activity-title">${esc(a.title)}</div>
+        <div class="activity-sub">${esc(a.sub)}</div>
+      </div>
+      <div class="activity-time">${a.time}</div>
+    </div>`).join('');
+
+  document.getElementById('fullActivityLogList').innerHTML = activities.concat([
+    { icon: '📁', bg: 'rgba(201,168,76,.15)', title: 'Downloaded Unit 1 Study Guide', sub: 'Level 3 Management Diploma', time: '5 days ago' },
+    { icon: '🎓', bg: 'rgba(52,199,123,.15)', title: 'Enrolled in Qualification', sub: 'Level 3 Diploma in Management', time: '1 week ago' }
+  ]).map(a => `
+    <div class="activity-item">
+      <div class="activity-icon" style="background:${a.bg};">${a.icon}</div>
+      <div class="activity-text">
+        <div class="activity-title">${esc(a.title)}</div>
+        <div class="activity-sub">${esc(a.sub)}</div>
+      </div>
+      <div class="activity-time">${a.time}</div>
+    </div>`).join('');
+
+  // Deadlines
+  const deadlines = [
+    { day: '15', month: 'Sep', title: 'Unit 2 Assignment Submission', course: 'Level 3 Management Diploma', urgency: 'urgent', label: 'Due 5 days' },
+    { day: '22', month: 'Sep', title: 'Micro-teaching Plan Submission', course: 'Level 3 AET', urgency: 'soon', label: 'This week' },
+    { day: '30', month: 'Sep', title: 'Mid-course Portfolio Review', course: 'Level 5 Operations Diploma', urgency: 'ok', label: '3 weeks' },
+  ];
+  document.getElementById('deadlineList').innerHTML = deadlines.map(d => `
+    <div class="deadline-item" style="cursor:pointer;" onclick="openModal('assignmentsModal')">
+      <div class="deadline-date"><div class="deadline-day" style="color:var(--gold);">${d.day}</div><div class="deadline-month">${d.month}</div></div>
+      <div class="deadline-divider"></div>
+      <div class="deadline-info"><div class="deadline-title">${esc(d.title)}</div><div class="deadline-course">${esc(d.course)}</div></div>
+      <span class="deadline-urgency ${d.urgency}">${d.label}</span>
+    </div>`).join('');
+}
+
+function renderCoursesGrid(coursesList) {
+  const grid = document.getElementById('coursesGrid');
+  if (!grid) return;
+  if (!coursesList || coursesList.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">🔍</div><div class="empty-state-title">No matching courses found</div><div class="empty-state-sub">Try searching with a different term or browse our catalog.</div><button class="btn-primary" style="margin-top:16px;" onclick="document.getElementById('dashboardSearch').value='';renderCoursesGrid(COURSES);">Show All Courses</button></div>`;
+    return;
+  }
+  grid.innerHTML = coursesList.map(c => {
+    const pct = LMS.getCourseProgress(c.id);
+    return `
+      <div class="course-card" onclick="window.location='course.html?id=${Number(c.id)}'">
+        <div class="course-card-thumb">
+          <div class="course-card-thumb-emoji" style="font-size:3.5rem;">${c.emoji}</div>
+          <div class="course-card-thumb-overlay"></div>
+          <span class="course-card-level">${c.level}</span>
+        </div>
+        <div class="course-card-body">
+          <div class="course-card-title">${esc(c.title)}</div>
+          <div class="course-card-instructor">👨‍🏫 ${esc(c.instructor)}</div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-top"><span>Progress</span><span>${pct}%</span></div>
+            <div class="progress-bar-track"><div class="progress-bar-fill" style="width:0%" data-target="${pct}"></div></div>
+          </div>
+          <div class="course-card-footer">
+            <span class="course-card-lessons">📖 ${Number(c.lessons)} lessons • ${esc(c.duration)}</span>
+            <button class="btn-continue">▶ Continue</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  setTimeout(() => document.querySelectorAll('#coursesGrid .progress-bar-fill').forEach(b => b.style.width = b.dataset.target + '%'), 200);
+}
+
+function countUp(id, target) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let n = 0;
+  const step = Math.max(1, Math.round(target / 30));
+  const t = setInterval(() => {
+    n = Math.min(n + step, target);
+    el.textContent = n;
+    if (n >= target) clearInterval(t);
+  }, 40);
+}
+
+function handleNavClick(el, pageId, callback) {
+  document.querySelectorAll('.sidebar .nav-item').forEach(item => item.classList.remove('active'));
+  if (el) el.classList.add('active');
+  if (typeof callback === 'function') callback();
+}
+
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) modal.classList.add('show');
+}
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) modal.classList.remove('show');
+}
+
+function openSection(secId) {
+  if (secId === 'courses') {
+    document.getElementById('my-courses').scrollIntoView({ behavior: 'smooth' });
+  } else if (secId === 'dashboard') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function toggleUserDropdown(e) {
+  e.stopPropagation();
+  const dropdown = document.getElementById('userDropdown');
+  dropdown?.classList.toggle('show');
+}
+document.addEventListener('click', () => {
+  document.getElementById('userDropdown')?.classList.remove('show');
+});
+
+function markAllNotificationsRead() {
+  const dot = document.querySelector('.notif-dot');
+  if (dot) dot.style.display = 'none';
+  LMS.showToast('All notifications marked as read!', 'success');
+}
+
+function filterDashboard(q) {
+  const term = q.toLowerCase().trim();
+  if (!term) {
+    renderCoursesGrid(COURSES);
+    return;
+  }
+  const filtered = COURSES.filter(c => c.title.toLowerCase().includes(term) || c.code.toLowerCase().includes(term) || c.instructor.toLowerCase().includes(term));
+  renderCoursesGrid(filtered);
+}
+
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10 MB
+const ALLOWED_EXT = ['pdf', 'doc', 'docx', 'odt', 'txt', 'pptx'];
+
+function handleFileSelected(input, labelId) {
+  const label = document.getElementById(labelId);
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const ext = (file.name.split('.').pop() || '').toLowerCase();
+  if (!ALLOWED_EXT.includes(ext)) {
+    input.value = '';
+    label.textContent = 'No file chosen';
+    LMS.showToast('Please upload a PDF, Word, ODT, TXT or PPTX file.', 'error');
+    return;
+  }
+  if (file.size > MAX_UPLOAD_BYTES) {
+    input.value = '';
+    label.textContent = 'No file chosen';
+    LMS.showToast('File is too large (max 10 MB).', 'error');
+    return;
+  }
+  label.textContent = '📄 ' + file.name;
+  label.style.color = 'var(--gold)';
+}
+
+function submitAssignment(title, labelId) {
+  const labelText = document.getElementById(labelId).textContent;
+  if (labelText === 'No file chosen') {
+    LMS.showToast('Please choose a file to submit first.', 'error');
+    return;
+  }
+  LMS.showToast(`Draft for ${title} saved (demo - uploads are not sent to a server yet).`, 'success');
+  closeModal('assignmentsModal');
+}
+
+function downloadResource(filename) {
+  LMS.showToast(`Downloading ${filename}...`, 'success');
+}
+
+function addChatBubble(author, text, mine) {
+  const history = document.getElementById('chatHistory');
+  const bubble = document.createElement('div');
+  bubble.style.cssText = mine
+    ? 'background:rgba(255,255,255,.08);padding:10px 14px;border-radius:12px;max-width:80%;align-self:flex-end;white-space:pre-wrap;word-break:break-word;'
+    : 'background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.2);padding:10px 14px;border-radius:12px;max-width:80%;align-self:flex-start;';
+  const who = document.createElement('div');
+  who.style.cssText = mine
+    ? 'font-size:.78rem;color:var(--slate-light);font-weight:600;margin-bottom:2px;'
+    : 'font-size:.78rem;color:var(--gold);font-weight:600;margin-bottom:2px;';
+  who.textContent = author;
+  const body = document.createElement('div');
+  body.textContent = text;              // user text is never parsed as HTML
+  bubble.append(who, body);
+  history.appendChild(bubble);
+  history.scrollTop = history.scrollHeight;
+}
+
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim().slice(0, 1000);
+  if (!msg) return;
+  addChatBubble('You', msg, true);
+  input.value = '';
+  setTimeout(() => {
+    addChatBubble('Emma Clarke', "Thanks for reaching out! I've received your note and will review it shortly. Keep up the great work!", false);
+  }, 1000);
+}
+
+function saveUserSettings(e) {
+  e.preventDefault();
+  const name = document.getElementById('setFullName').value.trim();
+  const email = document.getElementById('setEmail').value.trim();
+  if (!name || !email) return;
+  const updated = LMS.updateSessionProfile({ name, email });
+  if (!updated) return;
+  if (updated.email !== email) {
+    LMS.showToast('Please enter a valid email address.', 'error');
+    return;
+  }
+  document.getElementById('welcomeName').textContent = updated.name;
+  document.querySelectorAll('[data-user-name]').forEach(el => el.textContent = updated.name);
+  document.querySelectorAll('[data-user-avatar]').forEach(el => el.textContent = updated.avatar);
+  LMS.showToast('Profile settings saved successfully!', 'success');
+  closeModal('settingsModal');
+}
+</script>
+</body>
+</html>

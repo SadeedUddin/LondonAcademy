@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="100%" height="100%">
+<defs>
+  <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#09142A"/>
+    <stop offset="50%" stop-color="#0D1E3F"/>
+    <stop offset="100%" stop-color="#14264C"/>
+  </linearGradient>
+  <radialGradient id="goldGlow" cx="50%" cy="30%" r="65%">
+    <stop offset="0%" stop-color="#E6C765" stop-opacity="0.2"/>
+    <stop offset="100%" stop-color="#E6C765" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#E6C765"/>
+    <stop offset="100%" stop-color="#9A7A16"/>
+  </linearGradient>
+  <linearGradient id="cardBg" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.09"/>
+    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.03"/>
+  </linearGradient>
+  <pattern id="dotGrid" width="24" height="24" patternUnits="userSpaceOnUse">
+    <circle cx="3" cy="3" r="1.2" fill="#FFFFFF" fill-opacity="0.06"/>
+  </pattern>
+</defs>
+
+<rect width="640" height="480" fill="url(#bgGrad)"/>
+<rect width="640" height="480" fill="url(#dotGrid)"/>
+<rect width="640" height="480" fill="url(#goldGlow)"/>
+
+<!-- Header -->
+<g transform="translate(30, 20)">
+  <rect x="0" y="0" width="580" height="56" rx="10" fill="url(#cardBg)" stroke="url(#goldBorder)" stroke-opacity="0.35"/>
+  <rect x="16" y="14" width="150" height="26" rx="13" fill="#E6C765" fill-opacity="0.15" stroke="#E6C765" stroke-opacity="0.6"/>
+  <text x="91" y="31" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#E6C765" text-anchor="middle" letter-spacing="1">DECISION ENGINE</text>
+  <text x="182" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#FFFFFF">Predictive Analytics &amp;amp; Executive BI Dashboard</text>
+</g>
+
+<!-- Content -->
+
+    <g transform="translate(30, 95)">
+        <!-- Chart Section -->
+        <g transform="translate(0, 0)">
+            <rect width="360" height="210" rx="12" fill="url(#cardBg)" stroke="#E6C765" stroke-opacity="0.4"/>
+            <text x="20" y="30" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">Quarterly Predictive Growth Model</text>
+            <line x1="40" y1="60" x2="330" y2="60" stroke="#FFFFFF" stroke-opacity="0.1"/>
+            <line x1="40" y1="100" x2="330" y2="100" stroke="#FFFFFF" stroke-opacity="0.1"/>
+            <line x1="40" y1="140" x2="330" y2="140" stroke="#FFFFFF" stroke-opacity="0.1"/>
+            <line x1="40" y1="180" x2="330" y2="180" stroke="#FFFFFF" stroke-opacity="0.2"/>
+            <path d="M40 160 Q 110 130, 180 90 T 330 45" fill="none" stroke="#E6C765" stroke-width="3"/>
+            <circle cx="180" cy="90" r="5" fill="#E6C765"/>
+            <circle cx="330" cy="45" r="5" fill="#E6C765"/>
+            <path d="M40 160 Q 110 130, 180 90 T 330 45 V 180 H 40 Z" fill="#E6C765" fill-opacity="0.15"/>
+        </g>
+        <g transform="translate(380, 0)">
+            <rect width="200" height="98" rx="10" fill="url(#cardBg)" stroke="#E6C765" stroke-opacity="0.3"/>
+            <text x="18" y="28" font-family="sans-serif" font-size="11" fill="#A0AEC0">Forecast Accuracy</text>
+            <text x="18" y="62" font-family="sans-serif" font-size="28" font-weight="700" fill="#E6C765">96.8%</text>
+            <text x="18" y="82" font-family="sans-serif" font-size="10" fill="#38A169">+4.2% vs target</text>
+        </g>
+        <g transform="translate(380, 112)">
+            <rect width="200" height="98" rx="10" fill="url(#cardBg)" stroke="#E6C765" stroke-opacity="0.3"/>
+            <text x="18" y="28" font-family="sans-serif" font-size="11" fill="#A0AEC0">Data Pipeline Latency</text>
+            <text x="18" y="62" font-family="sans-serif" font-size="28" font-weight="700" fill="#FFFFFF">&lt; 1.2s</text>
+            <text x="18" y="82" font-family="sans-serif" font-size="10" fill="#E6C765">Real-time Stream</text>
+        </g>
+        <g transform="translate(0, 230)">
+            <rect width="580" height="100" rx="10" fill="url(#cardBg)" stroke="#E6C765" stroke-opacity="0.3"/>
+            <text x="20" y="25" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">BI Pipeline Flow</text>
+            <rect x="20" y="42" width="110" height="40" rx="6" fill="#E6C765" fill-opacity="0.15" stroke="#E6C765" stroke-opacity="0.4"/>
+            <text x="75" y="66" font-family="sans-serif" font-size="11" fill="#E6C765" text-anchor="middle">Data Sources</text>
+            <polygon points="145,62 155,66 145,70" fill="#E6C765"/>
+            <rect x="165" y="42" width="110" height="40" rx="6" fill="#E6C765" fill-opacity="0.15" stroke="#E6C765" stroke-opacity="0.4"/>
+            <text x="220" y="66" font-family="sans-serif" font-size="11" fill="#E6C765" text-anchor="middle">ETL Processing</text>
+            <polygon points="290,62 300,66 290,70" fill="#E6C765"/>
+            <rect x="310" y="42" width="120" height="40" rx="6" fill="#E6C765" fill-opacity="0.15" stroke="#E6C765" stroke-opacity="0.4"/>
+            <text x="370" y="66" font-family="sans-serif" font-size="11" fill="#E6C765" text-anchor="middle">Predictive Model</text>
+            <polygon points="445,62 455,66 445,70" fill="#E6C765"/>
+            <rect x="465" y="42" width="95" height="40" rx="6" fill="#E6C765" stroke="#E6C765"/>
+            <text x="512" y="66" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0D1E3F" text-anchor="middle">Executive KPI</text>
+        </g>
+    </g>
+    
+
+<!-- Bottom Gold Accent Strip -->
+<rect x="0" y="474" width="640" height="6" fill="url(#goldBorder)"/>
+</svg>

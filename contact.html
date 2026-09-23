@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io mailto:; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Get in touch with London UK Academy. Book a free consultation with our academic admissions team.">
+    <title>Contact Us | London UK Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap">
+    <link rel="stylesheet" href="style.css?v=20260920n">
+    <!-- Favicon / Tab Icon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon.png?v=2">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.png?v=2">
+</head>
+<body>
+    <div class="wash" aria-hidden="true"></div>
+
+    <!-- ============================ NAV ============================ -->
+    <div class="announce" role="complementary" aria-label="Contact information">
+        <a href="mailto:info@londonukacademy.uk">info@londonukacademy.uk</a>
+        <span class="sep" aria-hidden="true">|</span>
+        <a href="tel:+447435476020">+44 7435 476020</a>
+        <span class="sep" aria-hidden="true">|</span>
+        <span>UKPRN: <b>10095387</b></span>
+    </div>
+
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="brand">
+                <img src="lauk-logo.png?v=2" width="1278" height="240" alt="London Academy of Leadership and Management Limited"
+                    class="nav-logo" />
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="partners.html">Partners</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="active" aria-current="page">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="lms/index.html" class="btn btn-ghost nav-cta nav-signin">Sign In</a>
+                <a href="lms/index.html#register" class="btn btn-gold nav-cta nav-register">Register <span class="arrow">&rarr;</span></a>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileMenu"
+                aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="courses.html">Courses</a>
+        <a href="partners.html">Partners</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html" class="active" aria-current="page">Contact</a>
+        <a href="lms/index.html">Sign In</a>
+        <a href="lms/index.html#register" class="mobile-reg-btn">Register Now &rarr;</a>
+    </div>
+<!-- ============================ CONTACT ============================ -->
+    <section class="section section--first" id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div>
+                    <span class="eyebrow">Get in touch</span>
+                    <h1>Begin your<br>learning journey</h1>
+                    <div class="rule"></div>
+                    <p class="contact-lead">
+                        Whether you have questions about course eligibility, funding options, or simply want
+                        to speak with an enrolment advisor — we are here to help you take the next step.
+                    </p>
+
+                    <div class="contact-list">
+                        <div class="contact-row">
+                            <span class="contact-key">Location</span>
+                            <span class="contact-val">London, United Kingdom</span>
+                        </div>
+                        <div class="contact-row">
+                            <span class="contact-key">Email</span>
+                            <a class="contact-val" href="mailto:info@londonukacademy.uk">info@londonukacademy.uk</a>
+                        </div>
+                        <div class="contact-row">
+                            <span class="contact-key">Telephone</span>
+                            <a class="contact-val" href="tel:+447435476020">+44 7435 476020</a>
+                        </div>
+                        <div class="contact-row">
+                            <span class="contact-key">Web</span>
+                            <a class="contact-val" href="https://londonukacademy.uk">londonukacademy.uk</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <h3>Enquire about a course</h3>
+                    <form id="enquiry" method="post" data-endpoint="" data-mailto="info@londonukacademy.uk" autocomplete="on">
+                        <div class="field-row">
+                            <div class="field">
+                                <label for="fn">First name</label>
+                                <input id="fn" name="fn" type="text" placeholder="John" required maxlength="60" autocomplete="given-name">
+                            </div>
+                            <div class="field">
+                                <label for="ln">Last name</label>
+                                <input id="ln" name="ln" type="text" placeholder="Smith" required maxlength="60" autocomplete="family-name">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="em">Email address</label>
+                            <input id="em" name="em" type="email" placeholder="john@example.com" required maxlength="120" autocomplete="email">
+                        </div>
+                        <div class="field">
+                            <label for="ph">Phone number</label>
+                            <input id="ph" name="ph" type="tel" placeholder="+44 7000 000000" maxlength="25" pattern="[0-9+()\-\s]{6,25}" autocomplete="tel">
+                        </div>
+                        <div class="field">
+                            <label for="cr">Course of interest</label>
+                            <select id="cr" name="cr">
+                                <option value="">Select a course…</option>
+                                <optgroup label="Leadership &amp; People">
+                                    <option>AI for Business Leaders &amp; Digital Transformation</option>
+                                    <option>Leadership in Digital Age &amp; Change Management</option>
+                                    <option>Emotional Intelligence &amp; Advanced Leadership Communication</option>
+                                    <option>Human Resources &amp; Talent Management with AI Integration</option>
+                                    <option>Executive Secretary/Administrative Professional in AI Age</option>
+                                </optgroup>
+                                <optgroup label="Technology &amp; Data">
+                                    <option>Cybersecurity Management &amp; Governance</option>
+                                    <option>Data Analytics &amp; Business Intelligence</option>
+                                    <option>Cloud Computing &amp; Infrastructure Management (AWS/Azure)</option>
+                                    <option>Business Intelligence &amp; Advanced Analytics</option>
+                                </optgroup>
+                                <optgroup label="Finance &amp; FinTech">
+                                    <option>AI for Finance, Accounting &amp; Auditing (Advanced)</option>
+                                    <option>Financial Risk Management &amp; Compliance</option>
+                                    <option>Digital Banking &amp; FinTech Innovation</option>
+                                </optgroup>
+                                <optgroup label="Operations &amp; Supply Chain">
+                                    <option>Supply Chain Management &amp; Logistics with Digital Focus</option>
+                                    <option>AI-Powered Supply Chain &amp; Logistics Management</option>
+                                    <option>Strategic Procurement &amp; Contract Management</option>
+                                    <option>Construction Management &amp; Infrastructure Development</option>
+                                </optgroup>
+                                <optgroup label="Sustainability &amp; ESG">
+                                    <option>Renewable Energy &amp; Sustainability Management</option>
+                                    <option>Green Business Strategy &amp; ESG Governance</option>
+                                </optgroup>
+                                <optgroup label="Marketing &amp; Healthcare">
+                                    <option>Digital Marketing &amp; E-Commerce Strategy</option>
+                                    <option>Healthcare Management &amp; Digital Transformation</option>
+                                </optgroup>
+                                <option>Not sure yet &mdash; I would like advice</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="ms">Message (optional)</label>
+                            <textarea id="ms" name="ms" maxlength="2000"
+                                placeholder="Tell us about your goals, or any questions you have…"></textarea>
+                        </div>
+                        <div class="hp-field" aria-hidden="true">
+                            <label for="company_website">Leave this field empty</label>
+                            <input id="company_website" name="company_website" type="text" tabindex="-1" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-navy" style="width:100%; justify-content:center;">
+                            Send enquiry <span class="arrow">&rarr;</span>
+                        </button>
+                        <p class="form-note">An enrolment advisor replies within one working day. We only use your details to respond to this enquiry.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+<!-- ============================ FAQ TEASER ============================ -->
+    <section class="section" id="faq">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">Quick answers</span>
+                <h2 class="section-title">Common questions</h2>
+                <div class="rule"></div>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>Who awards your qualifications?</summary>
+                    <div class="faq-answer">Our qualifications are awarded by recognised UK awarding bodies.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I study fully online?</summary>
+                    <div class="faq-answer">Yes. All learning, tutor support and assessment submissions take place online, so you can study from anywhere.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>How long does a qualification take?</summary>
+                    <div class="faq-answer">It depends on the qualification &mdash; from around 1&ndash;3 months for an Award to 12&ndash;18 months for a Level 5 Diploma. See each course for details.</div>
+                </details>
+            </div>
+            <div class="faq-more">
+                <a href="faqs.html" class="btn btn-navy">See all FAQs <span class="arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </section>
+
+<!-- ============================ FOOTER ============================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="footer-brand-link">
+                        <img src="01-e1784552860859.png" alt="London Academy of Leadership and Management Limited"
+                            class="footer-logo" />
+                    </a>
+                    <p class="footer-desc">
+                        London Academy of Leadership and Management Limited — delivering UK-accredited
+                        online qualifications to professionals worldwide.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Courses</h4>
+                    <ul>
+                        <li><a href="courses.html">AI for Business Leaders</a></li>
+                        <li><a href="courses.html">Cybersecurity Management</a></li>
+                        <li><a href="courses.html">Data Analytics &amp; BI</a></li>
+                        <li><a href="courses.html">Digital Marketing &amp; E-Commerce</a></li>
+                        <li><a href="courses.html">Supply Chain &amp; Logistics</a></li>
+                        <li><a href="courses.html">View All</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Academy</h4>
+                    <ul>
+                        <li><a href="about.html">About us</a></li>
+                        <li><a href="about.html#why">Why choose us</a></li>
+                        <li><a href="courses.html#voices">Student reviews</a></li>
+                        <li><a href="courses.html#online">Online learning</a></li>
+                        <li><a href="partners.html">Our Partners</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact us</a></li>
+                        <li><a href="faqs.html">FAQs</a></li>
+                        <li><a href="privacy.html">Privacy policy</a></li>
+                        <li><a href="terms.html">Terms &amp; conditions</a></li>
+                        <li><a href="complaints.html">Complaints policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-rule"></div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 <b>London Academy of Leadership and Management Limited</b>. All rights reserved.</p>
+                <p>Registered in England &amp; Wales</p>
+            </div>
+        </div>
+    </footer>
+
+    
+<!-- ============================ MODAL ============================ -->
+    <div class="modal-scrim" id="scrim" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button class="modal-close" id="modalClose" aria-label="Close">&#10005;</button>
+            <div class="modal-level" id="modalLevel"></div>
+            <h2 id="modalTitle"></h2>
+            <p class="modal-sub" id="modalSub"></p>
+            <div class="modal-facts" id="modalFacts"></div>
+            <p class="modal-label">Units covered</p>
+            <ul class="unit-list" id="modalUnits"></ul>
+            <a href="contact.html#contact" class="btn btn-gold" id="modalCta">Enrol on this course <span
+                    class="arrow">&rarr;</span></a>
+        </div>
+    </div>
+
+    
+<!-- ============================ TOAST / TO TOP ============================ -->
+    <div class="toast" id="toast" role="status" aria-live="polite"><b>Enquiry sent.</b> We'll be in touch within one working day.</div>
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/447435476020" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp with London UK Academy">
+        <svg viewBox="0 0 24 24" class="whatsapp-icon" fill="currentColor" aria-hidden="true">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.99c-.002 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+        </svg>
+        <span class="whatsapp-tooltip">Chat with us on WhatsApp</span>
+    </a>
+    <a href="#top" class="to-top" id="toTop" aria-label="Back to top">&uarr;</a>
+
+    <script src="javascript.js?v=20260920a"></script>
+</body>
+
+</html>
+</body>
+</html>

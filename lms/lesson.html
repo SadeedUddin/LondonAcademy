@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson Player - London UK Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+  <link rel="stylesheet" href="lms.css?v=20260915b">
+  <link rel="icon" type="image/png" href="../favicon.png">
+</head>
+<body>
+<div class="lms-app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo-area">
+      <a href="../index.html" class="sidebar-logo-link" title="Return to Main Website"><img src="../lauk-logo.png?v=2" width="1278" height="240" alt="LAUK" class="sidebar-logo" onerror="this.style.display='none';document.getElementById('sidebarMark').style.display='flex'"></a>
+      <div id="sidebarMark" style="display:none;align-items:center;gap:10px;">
+        <div class="sidebar-brand-mark">L</div>
+        <div><div class="sidebar-brand-name">London UK</div><div class="sidebar-brand-sub">ACADEMY</div></div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-section">MAIN</div>
+      <div class="nav-item" data-page="dashboard" onclick="window.location='dashboard.html'"><span class="nav-item-icon">📊</span> Overview</div>
+      <div class="nav-item active" data-page="courses" onclick="window.location='dashboard.html#my-courses'"><span class="nav-item-icon">📚</span> My Courses</div>
+      <div class="nav-item" data-page="grades" onclick="window.location='dashboard.html'"><span class="nav-item-icon">📈</span> Grades</div>
+      <div class="sidebar-nav-section">LEARNING</div>
+      <div class="nav-item active"><span class="nav-item-icon">▶️</span> Now Playing</div>
+      <div class="nav-item" onclick="window.location='dashboard.html'"><span class="nav-item-icon">📝</span> Assignments <span class="nav-badge">2</span></div>
+      <div class="nav-item" onclick="window.location='dashboard.html'"><span class="nav-item-icon">📁</span> Resources</div>
+      <div class="sidebar-nav-section">ACCOUNT</div>
+      <div class="nav-item" onclick="window.location='dashboard.html'"><span class="nav-item-icon">💬</span> Messages <span class="nav-badge">1</span></div>
+      <div class="nav-item" onclick="window.location='dashboard.html'"><span class="nav-item-icon">⚙️</span> Settings</div>
+    </nav>
+    <div class="sidebar-user" data-logout title="Click to Log Out" style="cursor:pointer;">
+      <div class="sidebar-avatar" data-user-avatar>ST</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" data-user-name>Sarah Thompson</div>
+        <div class="sidebar-user-role" data-user-role>Student</div>
+      </div>
+      <div style="font-size:1.1rem;color:#8593AC;margin-left:auto;">🚪</div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="document.getElementById('sidebar').classList.remove('open');this.classList.remove('show')"></div>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show')">☰</button>
+      <div>
+        <div class="topbar-title" id="topbarTitle">Lesson</div>
+        <div class="topbar-breadcrumb" id="topbarCrumb">Dashboard / Course / Lesson</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div style="display:flex;align-items:center;gap:8px;font-size:.83rem;color:var(--slate);">
+        <span id="progressText">0/0 lessons</span>
+        <div style="width:80px;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;">
+          <div id="topbarProgress" style="height:100%;width:0%;background:var(--gold);transition:width .4s ease;"></div>
+        </div>
+      </div>
+      <div class="topbar-avatar" data-user-avatar>ST</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-body" id="pageBody" style="padding-block:32px;">
+      <div style="text-align:center;padding:60px;color:var(--slate);">Loading lesson content...</div>
+    </div>
+  </main>
+</div>
+
+<script src="lms.js?v=20260915b"></script>
+<script>
+const esc = LMS.escapeHtml;
+const session = LMS.requireAuth();
+if (session) {
+  LMS.setupSidebar('courses');
+
+  const courseId = parseInt(LMS.getParam('course') || '1', 10);
+  const lessonId = LMS.getParam('lesson') || 'l1';
+
+  const course = LMS.COURSES.find(c => c.id === courseId);
+  if (!course) {
+    document.getElementById('pageBody').innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-title">Course not found</div></div>';
+  } else {
+    const allLessons = course.modules.flatMap(m => m.items);
+    const lessonIdx = allLessons.findIndex(l => l.id === lessonId);
+    const lesson = allLessons[lessonIdx] || allLessons[0];
+    const prevLesson = lessonIdx > 0 ? allLessons[lessonIdx - 1] : null;
+    const nextLesson = lessonIdx < allLessons.length - 1 ? allLessons[lessonIdx + 1] : null;
+    const done = allLessons.filter(l => LMS.isLessonComplete(courseId, l.id)).length;
+
+    // Topbar
+    document.getElementById('topbarTitle').textContent = lesson.title;
+    document.getElementById('topbarCrumb').innerHTML = `<a href="dashboard.html" style="color:var(--gold);">Dashboard</a> / <a href="course.html?id=${course.id}" style="color:var(--gold);">${esc(course.title)}</a> / ${esc(lesson.title)}`;
+    document.getElementById('progressText').textContent = `${done}/${allLessons.length} lessons`;
+    setTimeout(() => document.getElementById('topbarProgress').style.width = (done / allLessons.length * 100) + '%', 200);
+
+    const isQuiz = lesson.type === 'quiz';
+    const isCompleted = LMS.isLessonComplete(courseId, lesson.id);
+    const content = getLessonContent(lesson.id, lesson, course);
+    window.CURRENT_LESSON_TITLE = lesson.title;
+    window.CURRENT_LESSON = { courseId: course.id, lessonId: lesson.id, isQuiz: lesson.type === 'quiz' };
+
+    document.getElementById('pageBody').innerHTML = `
+      <div class="lesson-layout" style="display:grid;grid-template-columns:1fr 320px;gap:24px;">
+        <!-- LEFT: Main content -->
+        <div>
+          ${isQuiz ? '' : `
+          <div class="video-player" style="background:#000;border-radius:16px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;margin-bottom:24px;position:relative;border:1px solid rgba(255,255,255,.1);">
+            <div class="video-placeholder" style="text-align:center;">
+              <div class="video-play-btn" style="width:64px;height:64px;border-radius:50%;background:var(--gold);color:#0B132B;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 12px;cursor:pointer;" onclick="this.parentElement.textContent='▶ Video player coming soon: ' + CURRENT_LESSON_TITLE">
+                ▶
+              </div>
+              <div style="font-size:1rem;font-weight:700;color:#fff;">${esc(lesson.title)}</div>
+              <div style="font-size:.82rem;color:var(--slate-light);margin-top:4px;">Duration: ${esc(lesson.duration)} • Highfield Standard</div>
+            </div>
+          </div>`}
+
+          <!-- Details Header -->
+          <div class="card" style="padding:24px;margin-bottom:24px;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+              <span style="padding:4px 12px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:100px;font-size:.78rem;font-weight:700;color:var(--gold);">${esc(course.level)}</span>
+              <span style="font-size:.82rem;color:var(--slate-light);">⏱️ ${esc(lesson.duration)}</span>
+              <span style="font-size:.82rem;color:var(--slate-light);">📖 ${lesson.type.charAt(0).toUpperCase()+lesson.type.slice(1)}</span>
+              ${isCompleted ? '<span style="color:var(--success);font-size:.82rem;font-weight:600;margin-left:auto;">✅ Completed</span>' : ''}
+            </div>
+            <h2 style="font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:8px;">${esc(lesson.title)}</h2>
+            <p style="font-size:.88rem;color:var(--slate-light);">${esc(course.title)} &nbsp;•&nbsp; Instructor: ${esc(course.instructor)}</p>
+          </div>
+
+          <!-- Body -->
+          ${isQuiz ? `<div id="quizContainer" class="card" style="padding:24px;"></div>` : `
+          <div class="card lesson-content-area" id="lessonContent" style="padding:28px;line-height:1.7;font-size:.92rem;">
+            ${content}
+          </div>`}
+
+          <!-- Navigation -->
+          <div class="lesson-nav-btns" style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;">
+            <button class="btn-secondary" ${!prevLesson ? 'disabled style="opacity:.4;cursor:not-allowed;"' : ''} onclick="window.location='lesson.html?course=${courseId}&lesson=${prevLesson?.id}'">◀ Previous Lesson</button>
+            <button class="btn-primary" id="completeBtn" ${(isCompleted || isQuiz) ? 'disabled style="opacity:.7;"' : ''} onclick="handleComplete()">
+              ${isCompleted ? '✅ Completed' : (isQuiz ? '🧠 Pass the quiz to complete' : '✓ Mark as Complete')}
+            </button>
+            <button class="btn-secondary" ${!nextLesson ? 'disabled style="opacity:.4;cursor:not-allowed;"' : ''} onclick="window.location='lesson.html?course=${courseId}&lesson=${nextLesson?.id}'">Next Lesson ▶</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: Lesson Sidebar -->
+        <div class="card lesson-list-panel" style="height:fit-content;padding:16px;">
+          <div class="lesson-panel-header" style="font-weight:700;color:var(--gold);font-size:.9rem;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:12px;">📚 ${esc(course.title)}</div>
+          ${course.modules.map(mod => `
+            <div style="padding:10px 4px 4px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--slate-light);">${esc(mod.title)}</div>
+            ${mod.items.map(l => {
+              const lDone = LMS.isLessonComplete(courseId, l.id);
+              const isCurrent = l.id === lesson.id;
+              return `<div class="lesson-panel-item ${isCurrent ? 'active' : ''}" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;margin-bottom:4px;cursor:pointer;background:${isCurrent ? 'rgba(201,168,76,.15)' : 'transparent'};border:${isCurrent ? '1px solid rgba(201,168,76,.3)' : '1px solid transparent'};" onclick="window.location='lesson.html?course=${courseId}&lesson=${l.id}'">
+                <div style="font-size:.85rem;color:${lDone ? 'var(--success)' : isCurrent ? 'var(--gold)' : 'var(--slate-light)'};">${lDone ? '✅' : isCurrent ? '▶' : '•'}</div>
+                <span style="flex:1;font-size:.82rem;color:${isCurrent ? '#fff' : 'var(--slate-light)'};">${esc(l.title)}</span>
+                <span style="font-size:.73rem;color:var(--slate-light);">${esc(l.duration)}</span>
+              </div>`;
+            }).join('')}
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    if (isQuiz) {
+      new LMS.QuizEngine(lesson.id, document.getElementById('quizContainer'), { onPass: () => handleComplete(true) });
+    }
+  }
+}
+
+function handleComplete(fromQuiz) {
+  const cur = window.CURRENT_LESSON;
+  if (!cur) return;
+  if (cur.isQuiz && fromQuiz !== true) {
+    LMS.showToast('Pass the quiz (70%+) to complete this lesson.', 'info');
+    return;
+  }
+  const courseId = cur.courseId;
+  if (!LMS.markLessonComplete(courseId, cur.lessonId)) return;
+  const btn = document.getElementById('completeBtn');
+  btn.textContent = '✅ Completed';
+  btn.disabled = true;
+  LMS.showToast('Lesson marked as complete! 🎉', 'success');
+
+  const course = LMS.COURSES.find(c => c.id === courseId);
+  if (course) {
+    const allLessons = course.modules.flatMap(m => m.items);
+    const done = allLessons.filter(l => LMS.isLessonComplete(courseId, l.id)).length;
+    document.getElementById('progressText').textContent = `${done}/${allLessons.length} lessons`;
+    document.getElementById('topbarProgress').style.width = (done / allLessons.length * 100) + '%';
+  }
+}
+
+function getLessonContent(lessonId, lesson, course) {
+  const typeIcon = { video: '📹', reading: '📖', quiz: '🧠' };
+  return `
+    <h3 style="color:var(--gold);font-size:1.15rem;margin-bottom:12px;">🎯 Learning Objectives</h3>
+    <p style="margin-bottom:16px;">By the end of this session you will be able to:</p>
+    <ul style="margin-bottom:20px;padding-left:20px;">
+      <li style="margin-bottom:6px;">Understand the core principles covered in <strong>${esc(lesson.title)}</strong></li>
+      <li style="margin-bottom:6px;">Apply the theory to real workplace scenarios in ${esc(course.discipline)}</li>
+      <li style="margin-bottom:6px;">Critically evaluate operational approaches and identify UK industry best practices</li>
+      <li style="margin-bottom:6px;">Prepare evidence for your assessment portfolio submission</li>
+    </ul>
+    
+    <h3 style="color:#fff;font-size:1.1rem;margin-top:24px;margin-bottom:12px;">${typeIcon[lesson.type] || '📖'} Key Concepts & Framework</h3>
+    <p style="margin-bottom:16px;">This lesson forms a core module of <strong>${esc(course.title)}</strong> led by ${esc(course.instructor)}. Content is mapped directly to Highfield learning outcomes.</p>
+    <p style="margin-bottom:16px;">Throughout this unit, you will examine both theoretical frameworks and practical case studies from leading organisations.</p>
+    
+    <h3 style="color:#fff;font-size:1.1rem;margin-top:24px;margin-bottom:12px;">📚 Recommended Reading</h3>
+    <ul style="margin-bottom:20px;padding-left:20px;">
+      <li style="margin-bottom:6px;">CIPD Factsheet: Management and Leadership Development</li>
+      <li style="margin-bottom:6px;">Highfield Qualification Specification (${esc(course.level)})</li>
+      <li style="margin-bottom:6px;">CMI Professional Management Standards</li>
+    </ul>
+    
+    <div style="background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:20px;margin-top:24px;">
+      <div style="font-weight:700;color:var(--gold);margin-bottom:6px;font-size:.95rem;">💡 Tutor Recommendation</div>
+      <div style="font-size:.88rem;color:var(--slate-light);">When writing your unit assignment, always reference theoretical models alongside practical workplace examples to achieve Distinction grade criteria.</div>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign In & Register — London UK Academy LMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+  <link rel="stylesheet" href="lms.css?v=20260915b">
+  <link rel="icon" type="image/png" href="../favicon.png">
+</head>
+<body class="auth-page">
+
+<div class="auth-wrapper">
+
+  <div class="auth-brand">
+    <a href="../index.html" class="auth-logo-link" title="Return to Main Website"><img src="../lauk-logo.png?v=2" width="1278" height="240" alt="London UK Academy" class="auth-brand-logo" onerror="this.style.display='none';document.getElementById('fallbackLogo').style.display='block'"></a>
+    <div id="fallbackLogo" style="display:none;font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--gold);margin-top:12px;">LONDON UK ACADEMY</div>
+  </div>
+
+  <div class="auth-card">
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Sign In</button>
+      <button class="auth-tab" id="registerTab" onclick="switchTab('register')">Create Account</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <h2 class="auth-title">Welcome back</h2>
+      <p class="auth-subtitle">Sign in to continue your learning journey</p>
+
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <div class="form-input-icon-wrap">
+          <span class="form-input-icon">✉️</span>
+          <input type="email" id="loginEmail" class="form-input" placeholder="you@example.com" autocomplete="username" maxlength="120" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="form-input-icon-wrap">
+          <button type="button" class="form-input-icon toggle-password-btn" onclick="togglePasswordVisibility('loginPassword', this)" title="Click to view/hide password">🔒</button>
+          <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" autocomplete="current-password" maxlength="256" required>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:.84rem;color:#8593AC;cursor:pointer;">
+          <input type="checkbox" id="rememberMe" style="accent-color:var(--gold);"> Remember me for 7 days
+        </label>
+        <a href="#" style="font-size:.84rem;color:var(--gold);text-decoration:none;" onclick="LMS.showToast('To reset your password, email info@londonukacademy.uk from your registered address.', 'info', 6000);return false;">Forgot password?</a>
+      </div>
+
+      <div id="loginError" style="display:none;color:var(--danger);font-size:.83rem;margin-bottom:14px;padding:10px 14px;background:rgba(232,72,85,.12);border-radius:8px;border:1px solid rgba(232,72,85,.25);"></div>
+
+      <button class="btn-auth" id="loginBtn" onclick="handleLogin()">Sign In →</button>
+
+      <div class="auth-divider">or explore the demo</div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button onclick="startDemo()" style="padding:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#B8C4DA;font-size:.86rem;cursor:pointer;transition:all .2s ease;display:flex;align-items:center;justify-content:center;gap:8px;"
+          onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(201,168,76,.4)';" onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='rgba(255,255,255,.1)';">
+          🎓 Try the Student Demo (sample data)
+        </button>
+      </div>
+
+      <p class="auth-switch">Don't have an account? <a onclick="switchTab('register')">Create one free →</a></p>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display:none;">
+      <h2 class="auth-title">Create your account</h2>
+      <p class="auth-subtitle">Join 15,000+ professionals learning with LAUK</p>
+
+      <div class="form-group">
+        <label class="form-label">Full name</label>
+        <div class="form-input-icon-wrap">
+          <span class="form-input-icon">👤</span>
+          <input type="text" id="regName" class="form-input" placeholder="Your full name" autocomplete="name" maxlength="80" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <div class="form-input-icon-wrap">
+          <span class="form-input-icon">✉️</span>
+          <input type="email" id="regEmail" class="form-input" placeholder="you@example.com" autocomplete="email" maxlength="120" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="form-input-icon-wrap">
+          <button type="button" class="form-input-icon toggle-password-btn" onclick="togglePasswordVisibility('regPassword', this)" title="Click to view/hide password">🔒</button>
+          <input type="password" id="regPassword" class="form-input" placeholder="Min. 8 characters, letters + numbers" autocomplete="new-password" maxlength="256" required>
+        </div>
+      </div>
+
+      <p style="font-size:.8rem;color:#8593AC;margin:-4px 0 16px;">Tutor and staff accounts are created by the academy team.</p>
+
+      <div id="regError" style="display:none;color:var(--danger);font-size:.83rem;margin-bottom:14px;padding:10px 14px;background:rgba(232,72,85,.12);border-radius:8px;border:1px solid rgba(232,72,85,.25);"></div>
+
+      <button class="btn-auth" onclick="handleRegister()">Create Account →</button>
+
+      <p class="auth-switch">Already have an account? <a onclick="switchTab('login')">Sign in →</a></p>
+    </div>
+
+  </div>
+</div>
+
+<script src="lms.js?v=20260915b"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const nextUrl = LMS.safeNext(params.get('next'), null);
+  const destFor = (user) => user.role === 'admin'
+    ? (nextUrl || 'admin.html')
+    : (nextUrl && nextUrl !== 'admin.html' ? nextUrl : 'dashboard.html');
+
+  // Already signed in? Go straight in.
+  const existing = LMS.getSession();
+  if (existing) window.location.replace(destFor(existing));
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (location.hash === '#register' || params.get('tab') === 'register') switchTab('register');
+  });
+  window.addEventListener('hashchange', () => {
+    if (location.hash === '#register') switchTab('register');
+    else if (location.hash === '#login' || location.hash === '') switchTab('login');
+  });
+
+  function switchTab(tab) {
+    document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+    document.getElementById('registerTab').classList.toggle('active', tab === 'register');
+    document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+  }
+
+  function togglePasswordVisibility(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.textContent = show ? '🔓' : '🔒';
+    btn.title = show ? 'Hide password' : 'Show password';
+    btn.style.color = show ? 'var(--gold, #c9a84c)' : '#8593AC';
+  }
+
+  function showError(el, msg) {
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  let busy = false;
+
+  async function handleLogin() {
+    if (busy) return;
+    const email = document.getElementById('loginEmail').value;
+    const pass = document.getElementById('loginPassword').value;
+    const remember = document.getElementById('rememberMe').checked;
+    const errEl = document.getElementById('loginError');
+    const btn = document.getElementById('loginBtn');
+    errEl.style.display = 'none';
+    busy = true;
+    btn.textContent = 'Signing in…';
+    btn.disabled = true;
+    try {
+      const user = await LMS.login(email, pass, remember);
+      document.getElementById('loginPassword').value = '';
+      LMS.showToast(`Welcome back, ${user.name.split(' ')[0]}!`, 'success');
+      setTimeout(() => window.location.href = destFor(user), 500);
+    } catch (e) {
+      showError(errEl, e.message);
+      btn.textContent = 'Sign In →';
+      btn.disabled = false;
+    } finally {
+      busy = false;
+    }
+  }
+
+  async function handleRegister() {
+    if (busy) return;
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const pass = document.getElementById('regPassword').value;
+    const errEl = document.getElementById('regError');
+    errEl.style.display = 'none';
+    if (!name.trim() || !email.trim() || !pass) { showError(errEl, 'Please fill in all fields.'); return; }
+    busy = true;
+    try {
+      const user = await LMS.register(name, email, pass);
+      document.getElementById('regPassword').value = '';
+      LMS.showToast(`Account created! Welcome, ${user.name.split(' ')[0]}!`, 'success');
+      setTimeout(() => window.location.href = 'dashboard.html', 500);
+    } catch (e) {
+      showError(errEl, e.message);
+    } finally {
+      busy = false;
+    }
+  }
+
+  function startDemo() {
+    const user = LMS.demoLogin();
+    LMS.showToast(`Opening the demo as ${user.name.split(' ')[0]}…`, 'info');
+    setTimeout(() => window.location.href = 'dashboard.html', 400);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    if (document.getElementById('loginForm').style.display !== 'none') handleLogin();
+    else handleRegister();
+  });
+</script>
+</body>
+</html>

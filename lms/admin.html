@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — London UK Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+  <link rel="stylesheet" href="lms.css?v=20260915b">
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <script>document.documentElement.style.visibility='hidden';</script>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="lms-app">
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo-area">
+      <a href="../index.html" class="sidebar-logo-link" title="Return to Main Website"><img src="../lauk-logo.png?v=2" width="1278" height="240" alt="LAUK" class="sidebar-logo" onerror="this.style.display='none';document.getElementById('sidebarMark').style.display='flex'"></a>
+      <div id="sidebarMark" style="display:none;align-items:center;gap:10px;">
+        <div class="sidebar-brand-mark">L</div>
+        <div><div class="sidebar-brand-name">London UK</div><div class="sidebar-brand-sub">ACADEMY</div></div>
+      </div>
+    </div>
+
+        <nav class="sidebar-nav">
+      <div class="sidebar-nav-section">ADMINISTRATION</div>
+      <div class="nav-item active" id="nav-overview" onclick="switchAdminSection('overview')">
+        <span class="nav-item-icon">📊</span> Overview
+      </div>
+      <div class="nav-item" id="nav-students" onclick="switchAdminSection('students')">
+        <span class="nav-item-icon">👥</span> Students <span class="nav-badge">12</span>
+      </div>
+      <div class="nav-item" id="nav-courses" onclick="switchAdminSection('courses')">
+        <span class="nav-item-icon">📚</span> Courses & Modules
+      </div>
+      <div class="nav-item" id="nav-assignments" onclick="switchAdminSection('assignments')">
+        <span class="nav-item-icon">📝</span> Assignments Review <span class="nav-badge">5</span>
+      </div>
+      <div class="nav-item" id="nav-reports" onclick="switchAdminSection('reports')">
+        <span class="nav-item-icon">📈</span> Analytics & Reports
+      </div>
+
+      <div class="sidebar-nav-section">SYSTEM</div>
+      <div class="nav-item" id="nav-settings" onclick="openModal('settingsModal')">
+        <span class="nav-item-icon">⚙️</span> Portal Settings
+      </div>
+      <div class="nav-item" onclick="window.location='../index.html'">
+        <span class="nav-item-icon">🌐</span> Main Website
+      </div>
+    </nav>
+
+    <div class="sidebar-user" data-logout title="Click to Log Out" style="cursor:pointer;">
+      <div class="sidebar-avatar" data-user-avatar style="background:var(--gold);color:#080b14;">SA</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" data-user-name>Sadeed (Admin)</div>
+        <div class="sidebar-user-role" data-user-role>Administrator</div>
+      </div>
+      <div style="font-size:1.1rem;color:#8593AC;margin-left:auto;">🚪</div>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show')">☰</button>
+        <div>
+          <div class="topbar-title" id="topbarTitle" style="font-size:1.2rem;font-weight:700;color:#fff;">Admin Dashboard</div>
+          <div class="topbar-breadcrumb" id="topbarBreadcrumb" style="font-size:.78rem;color:#8593AC;">Admin / Overview</div>
+        </div>
+      </div>
+      
+      <div class="topbar-search">
+        <span class="topbar-search-icon">🔍</span>
+        <input type="text" id="adminSearchInput" placeholder="Search students, courses, assignments…" onkeyup="filterAdminData(this.value)">
+      </div>
+
+      <div class="topbar-actions">
+        <!-- Notification Dropdown -->
+        <div class="topbar-icon-btn" id="notifBtn" style="position:relative;" title="Notifications">
+          🔔
+          <span class="notif-dot"></span>
+          <div class="notif-panel" id="notifPanel">
+            <div class="notif-panel-header">
+              <span>Admin Alerts</span>
+              <span style="font-size:.78rem;color:var(--gold);cursor:pointer;" onclick="markAllNotificationsRead()">Mark all read</span>
+            </div>
+            <div>
+              <div class="notif-item" onclick="switchAdminSection('assignments')">
+                <div class="notif-dot-small"></div>
+                <div><div class="notif-text"><strong>5 new assignments</strong> pending grading</div><div class="notif-time">10 mins ago</div></div>
+              </div>
+              <div class="notif-item" onclick="switchAdminSection('students')">
+                <div class="notif-dot-small" style="background:var(--success);"></div>
+                <div><div class="notif-text">New student <strong>Amira Patel</strong> enrolled in L3 AET</div><div class="notif-time">1 hour ago</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Profile Dropdown -->
+        <div style="position:relative;">
+          <div class="topbar-avatar" id="userMenuBtn" onclick="toggleUserDropdown(event)" style="cursor:pointer;" data-user-avatar title="Admin Menu">SA</div>
+          <div class="topbar-user-dropdown" id="userDropdown">
+            <div class="dropdown-item" onclick="openModal('settingsModal')">⚙️ Portal Settings</div>
+            <div class="dropdown-item" onclick="switchAdminSection('students')">👥 Manage Students</div>
+            <div class="dropdown-item" onclick="window.location='dashboard.html'">🎓 View Student Portal</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" style="color:var(--danger);" data-logout>🚪 Log Out</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ADMIN CONTAINER -->
+    <div class="container" style="padding-block:32px;">
+
+      <!-- ==================== SECTION 1: OVERVIEW ==================== -->
+      <div id="sec-overview">
+        <!-- STATS GRID -->
+        <div class="stats-grid">
+          <div class="stat-card" style="cursor:pointer;" onclick="switchAdminSection('students')" title="Click to view Students">
+            <div class="stat-card-top">
+              <div class="stat-card-icon" style="background:rgba(201,168,76,.15);color:var(--gold);">👥</div>
+              <span class="stat-card-change up">+12 this mo</span>
+            </div>
+            <div class="stat-card-value" id="statTotalStudents">12,480</div>
+            <div class="stat-card-label">Total Active Students</div>
+          </div>
+
+          <div class="stat-card" style="cursor:pointer;" onclick="switchAdminSection('courses')" title="Click to view Courses">
+            <div class="stat-card-top">
+              <div class="stat-card-icon" style="background:rgba(52,199,123,.15);color:var(--success);">📚</div>
+              <span class="stat-card-change up">5 Active</span>
+            </div>
+            <div class="stat-card-value">5</div>
+            <div class="stat-card-label">Qualifications Offered</div>
+          </div>
+
+          <div class="stat-card" style="cursor:pointer;" onclick="switchAdminSection('assignments')" title="Click to view Assignments">
+            <div class="stat-card-top">
+              <div class="stat-card-icon" style="background:rgba(78,157,255,.15);color:var(--info);">🏆</div>
+              <span class="stat-card-change up">98.4% Pass</span>
+            </div>
+            <div class="stat-card-value">1,240</div>
+            <div class="stat-card-label">Completions & Certs</div>
+          </div>
+
+          <div class="stat-card" style="cursor:pointer;" onclick="switchAdminSection('reports')" title="Click to view Financials">
+            <div class="stat-card-top">
+              <div class="stat-card-icon" style="background:rgba(245,166,35,.15);color:var(--warning);">💷</div>
+              <span class="stat-card-change up">+18% YTD</span>
+            </div>
+            <div class="stat-card-value">£148,500</div>
+            <div class="stat-card-label">Revenue (YTD)</div>
+          </div>
+        </div>
+
+        <!-- TWO COL: CHARTS & TOP COURSES -->
+        <div class="two-col-wide" style="margin-bottom:28px;">
+          <!-- Enrolment Chart -->
+          <div class="card">
+            <div class="section-header">
+              <div>
+                <div class="section-header-title">Monthly Enrolment Trends</div>
+                <div class="section-header-sub">Student registrations & completions (2026)</div>
+              </div>
+              <span class="btn-view-all" onclick="switchAdminSection('reports')">Full Report →</span>
+            </div>
+            <div style="display:flex;align-items:flex-end;gap:18px;height:180px;padding-top:20px;border-bottom:1px solid rgba(255,255,255,.08);">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <div style="width:100%;background:linear-gradient(180deg,var(--gold),rgba(201,168,76,.3));height:65%;border-radius:6px 6px 0 0;"></div>
+                <span style="font-size:.74rem;color:#8593AC;">Apr</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <div style="width:100%;background:linear-gradient(180deg,var(--gold),rgba(201,168,76,.3));height:78%;border-radius:6px 6px 0 0;"></div>
+                <span style="font-size:.74rem;color:#8593AC;">May</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <div style="width:100%;background:linear-gradient(180deg,var(--gold),rgba(201,168,76,.3));height:55%;border-radius:6px 6px 0 0;"></div>
+                <span style="font-size:.74rem;color:#8593AC;">Jun</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <div style="width:100%;background:linear-gradient(180deg,var(--gold),rgba(201,168,76,.3));height:90%;border-radius:6px 6px 0 0;"></div>
+                <span style="font-size:.74rem;color:#8593AC;">Jul</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <div style="width:100%;background:linear-gradient(180deg,var(--gold),rgba(201,168,76,.3));height:82%;border-radius:6px 6px 0 0;"></div>
+                <span style="font-size:.74rem;color:#8593AC;">Aug</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <div style="width:100%;background:linear-gradient(180deg,var(--gold),rgba(201,168,76,.3));height:96%;border-radius:6px 6px 0 0;"></div>
+                <span style="font-size:.74rem;color:#8593AC;">Sep</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Courses Breakdown -->
+          <div class="card">
+            <div class="section-header">
+              <div>
+                <div class="section-header-title">Top Qualifications</div>
+                <div class="section-header-sub">By active student count</div>
+              </div>
+              <span class="btn-view-all" onclick="switchAdminSection('courses')">View all →</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.84rem;margin-bottom:4px;"><strong style="color:#fff;">L3 Management Diploma</strong><span>4,820 students</span></div>
+                <div class="progress-bar-track" style="height:8px;"><div class="progress-bar-fill" style="width:85%;background:var(--gold);"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.84rem;margin-bottom:4px;"><strong style="color:#fff;">Level 3 Award in AET</strong><span>3,410 students</span></div>
+                <div class="progress-bar-track" style="height:8px;"><div class="progress-bar-fill" style="width:68%;background:var(--success);"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.84rem;margin-bottom:4px;"><strong style="color:#fff;">Level 5 Operations Diploma</strong><span>2,150 students</span></div>
+                <div class="progress-bar-track" style="height:8px;"><div class="progress-bar-fill" style="width:45%;background:var(--info);"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT STUDENTS & PENDING ASSIGNMENTS -->
+        <div class="two-col-wide">
+          <!-- Recent Students Table -->
+          <div class="card">
+            <div class="section-header">
+              <div>
+                <div class="section-header-title">Recently Enrolled Students</div>
+                <div class="section-header-sub">Latest registered accounts</div>
+              </div>
+              <span class="btn-view-all" onclick="switchAdminSection('students')">View All Students →</span>
+            </div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Enrolled Course</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="overviewStudentsBody">
+                  <!-- injected by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Pending Assignments List -->
+          <div class="card">
+            <div class="section-header">
+              <div>
+                <div class="section-header-title">Pending Submissions</div>
+                <div class="section-header-sub">Awaiting tutor review</div>
+              </div>
+              <span class="btn-view-all" onclick="switchAdminSection('assignments')">Review All →</span>
+            </div>
+            <div class="deadline-list" id="overviewPendingBody">
+              <!-- injected by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 2: STUDENTS ==================== -->
+      <div id="sec-students" style="display:none;">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-header-title">Student Management Directory</div>
+              <div class="section-header-sub">Manage enrolled learners, progress, and accounts</div>
+            </div>
+            <button class="btn-primary" onclick="openModal('addStudentModal')">＋ Add New Student</button>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Email</th>
+                  <th>Enrolled Qualification</th>
+                  <th>Progress</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="fullStudentsBody">
+                <!-- injected by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 3: COURSES ==================== -->
+      <div id="sec-courses" style="display:none;">
+        <div class="section-header">
+          <div>
+            <div class="section-header-title">Qualifications & Course Catalog</div>
+            <div class="section-header-sub">Manage Highfield courses</div>
+          </div>
+          <button class="btn-primary" onclick="LMS.showToast('Course creation modal opened!', 'info')">＋ Create New Course</button>
+        </div>
+        <div class="courses-grid" id="adminCoursesGrid">
+          <!-- injected by JS -->
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 4: ASSIGNMENTS ==================== -->
+      <div id="sec-assignments" style="display:none;">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-header-title">Assignment Assessment Queue</div>
+              <div class="section-header-sub">Review student draft submissions and issue feedback</div>
+            </div>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Assignment Title</th>
+                  <th>Course</th>
+                  <th>Submitted Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="fullAssignmentsBody">
+                <!-- injected by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 5: REPORTS ==================== -->
+      <div id="sec-reports" style="display:none;">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-header-title">Academic & Financial Reports</div>
+              <div class="section-header-sub">Highfield compliance and enrolment audit summary</div>
+            </div>
+            <button class="btn-secondary" onclick="LMS.showToast('PDF Audit Report exported!', 'success')">📥 Export PDF Audit</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:20px;">
+            <div style="background:rgba(255,255,255,.03);padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,.08);">
+              <h4 style="color:#fff;margin-bottom:8px;">Pass Rate Consistency</h4>
+              <div style="font-size:2rem;font-weight:800;color:var(--success);">98.4%</div>
+              <div style="font-size:.78rem;color:#8593AC;margin-top:4px;">Highfield audit compliant</div>
+            </div>
+            <div style="background:rgba(255,255,255,.03);padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,.08);">
+              <h4 style="color:#fff;margin-bottom:8px;">Avg Assessment Time</h4>
+              <div style="font-size:2rem;font-weight:800;color:var(--gold);">1.8 Days</div>
+              <div style="font-size:.78rem;color:#8593AC;margin-top:4px;">Fast tutor feedback delivery</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ==================== MODALS ==================== -->
+<div class="lms-modal-backdrop" id="addStudentModal">
+  <div class="lms-modal">
+    <div class="lms-modal-header">
+      <div class="lms-modal-title">👤 Add New Student Account</div>
+      <button class="lms-modal-close" onclick="closeModal('addStudentModal')">×</button>
+    </div>
+    <div class="lms-modal-body">
+      <form onsubmit="handleAddStudent(event)">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div>
+            <label class="form-label">Student Full Name</label>
+            <input type="text" id="newStudentName" class="form-input" placeholder="e.g. John Smith" required>
+          </div>
+          <div>
+            <label class="form-label">Email Address</label>
+            <input type="email" id="newStudentEmail" class="form-input" placeholder="john@example.com" required>
+          </div>
+          <div>
+            <label class="form-label">Select Qualification</label>
+            <select id="newStudentCourse" class="form-input" style="background:#121826;">
+              <option value="Level 3 Management Diploma">Level 3 Management Diploma</option>
+              <option value="Level 3 Award in Education & Training">Level 3 Award in Education & Training</option>
+              <option value="Level 5 Operations Diploma">Level 5 Operations Diploma</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary" style="margin-top:8px;">Create Student Account →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="lms-modal-backdrop" id="reviewModal">
+  <div class="lms-modal">
+    <div class="lms-modal-header">
+      <div class="lms-modal-title">📝 Review Student Assignment</div>
+      <button class="lms-modal-close" onclick="closeModal('reviewModal')">×</button>
+    </div>
+    <div class="lms-modal-body">
+      <div style="margin-bottom:16px;">
+        <strong style="color:#fff;" id="reviewStudentName">Sarah Jenkins</strong>
+        <div style="font-size:.82rem;color:#8593AC;" id="reviewTitle">Unit 2 Portfolio & Reflective Essay</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);padding:14px;border-radius:10px;margin-bottom:16px;">
+        <span style="color:var(--gold);">📄 Submitted File:</span> <code>Unit2_Reflective_Essay_Draft.docx</code>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <label class="form-label">Grade Score (%)</label>
+          <input type="number" id="reviewGrade" class="form-input" value="88" min="0" max="100">
+        </div>
+        <div>
+          <label class="form-label">Tutor Feedback Comments</label>
+          <textarea id="reviewFeedback" class="form-input" style="height:90px;resize:none;">Excellent analysis of SMART KPIs and leadership delegation frameworks. Approved with distinction.</textarea>
+        </div>
+      </div>
+    </div>
+    <div class="lms-modal-footer">
+      <button class="btn-secondary" onclick="closeModal('reviewModal')">Cancel</button>
+      <button class="btn-primary" onclick="submitGradeReview()">Submit Grade & Notify Student →</button>
+    </div>
+  </div>
+</div>
+
+<script src="lms.js?v=20260915b"></script>
+<script>
+const esc = LMS.escapeHtml;
+const session = LMS.requireAuth('admin');
+if (session) {
+  document.documentElement.style.visibility = '';
+  LMS.setupSidebar('admin-dashboard');
+
+  // Populate overview data
+  renderOverviewData();
+  renderStudentsTable();
+  renderCoursesGrid();
+  renderAssignmentsTable();
+}
+
+function switchAdminSection(sec) {
+  const sections = ['overview', 'students', 'courses', 'assignments', 'reports'];
+  sections.forEach(s => {
+    const el = document.getElementById(`sec-${s}`);
+    const nav = document.getElementById(`nav-${s}`);
+    if (el) el.style.display = s === sec ? 'block' : 'none';
+    if (nav) nav.classList.toggle('active', s === sec);
+  });
+
+  const titles = {
+    overview: 'Admin Dashboard',
+    students: 'Student Directory & Accounts',
+    courses: 'Course & Qualification Catalog',
+    assignments: 'Assignment Submissions Queue',
+    reports: 'System Analytics & Audit Reports'
+  };
+  document.getElementById('topbarTitle').textContent = titles[sec] || 'Admin Dashboard';
+  document.getElementById('topbarBreadcrumb').textContent = `Admin / ${sec.charAt(0).toUpperCase() + sec.slice(1)}`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderOverviewData() {
+  const students = DEMO_USERS.filter(u => u.role === 'student');
+  const tbody = document.getElementById('overviewStudentsBody');
+  tbody.innerHTML = students.map(s => `
+    <tr>
+      <td><strong>${esc(s.name)}</strong></td>
+      <td>Level 3 Management Diploma</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="progress-bar-track" style="width:80px;height:6px;"><div class="progress-bar-fill" style="width:75%;background:var(--gold);"></div></div>
+          <span>75%</span>
+        </div>
+      </td>
+      <td><span class="deadline-urgency ok">Active</span></td>
+      <td><button class="btn-secondary" style="padding:4px 10px;font-size:.76rem;" data-action="view-students">View Account</button></td>
+    </tr>`).join('');
+
+  const pendingItems = [
+    { day: '15', month: 'Sep', name: 'Sarah Jenkins', title: 'Unit 2 Portfolio & Essay', course: 'L3MD', urgency: 'urgent' },
+    { day: '22', month: 'Sep', name: 'Amira Patel', title: 'Micro-teaching Lesson Plan', course: 'L3 AET', urgency: 'soon' }
+  ];
+  document.getElementById('overviewPendingBody').innerHTML = pendingItems.map(p => `
+    <div class="deadline-item" style="cursor:pointer;" data-action="review" data-name="${esc(p.name)}" data-title="${esc(p.title)}">
+      <div class="deadline-date"><div class="deadline-day" style="color:var(--gold);">${esc(p.day)}</div><div class="deadline-month">${esc(p.month)}</div></div>
+      <div class="deadline-divider"></div>
+      <div class="deadline-info"><div class="deadline-title">${esc(p.title)}</div><div class="deadline-course">${esc(p.name)} · ${esc(p.course)}</div></div>
+      <span class="deadline-urgency ${p.urgency === 'urgent' ? 'urgent' : 'soon'}">Review</span>
+    </div>`).join('');
+}
+
+function renderStudentsTable() {
+  const students = DEMO_USERS.filter(u => u.role === 'student');
+  const tbody = document.getElementById('fullStudentsBody');
+  tbody.innerHTML = students.concat([
+    { id: 5, name: 'Marcus Vance', email: 'marcus@example.com', role: 'student' },
+    { id: 6, name: 'Elena Rostova', email: 'elena@example.com', role: 'student' }
+  ]).map(s => `
+    <tr>
+      <td><strong>${esc(s.name)}</strong></td>
+      <td>${esc(s.email)}</td>
+      <td>Level 3 Management Diploma</td>
+      <td>78%</td>
+      <td><span class="deadline-urgency ok">Enrolled</span></td>
+      <td>
+        <button class="btn-secondary" style="padding:4px 8px;font-size:.76rem;margin-right:6px;" data-action="edit-student" data-name="${esc(s.name)}">✏️ Edit</button>
+        <button class="btn-secondary" style="padding:4px 8px;font-size:.76rem;color:var(--danger);" data-action="archive-student" data-name="${esc(s.name)}" title="Archive student">🗑️</button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderCoursesGrid() {
+  const grid = document.getElementById('adminCoursesGrid');
+  grid.innerHTML = COURSES.map(c => `
+    <div class="course-card">
+      <div class="course-card-thumb">
+        <div class="course-card-thumb-emoji" style="font-size:3.5rem;">${esc(c.emoji)}</div>
+        <span class="course-card-level">${esc(c.level)}</span>
+      </div>
+      <div class="course-card-body">
+        <div class="course-card-title">${esc(c.title)}</div>
+        <div class="course-card-instructor">👤 Instructor: ${esc(c.instructor)}</div>
+        <div style="font-size:.8rem;color:#8593AC;margin-block:8px;">📖 ${Number(c.lessons)} Lessons · Code: ${esc(c.code)}</div>
+        <div class="course-card-footer">
+          <button class="btn-secondary" style="width:100%;justify-content:center;" data-action="edit-syllabus" data-code="${esc(c.code)}">⚙️ Edit Syllabus</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderAssignmentsTable() {
+  const tbody = document.getElementById('fullAssignmentsBody');
+  const items = [
+    { name: 'Sarah Jenkins', title: 'Unit 2 Portfolio & Essay', course: 'Level 3 Management Diploma', date: '10 Sep 2026', status: 'Pending' },
+    { name: 'Amira Patel', title: 'Micro-teaching Lesson Plan', course: 'Level 3 AET', date: '09 Sep 2026', status: 'Pending' },
+    { name: 'David Ross', title: 'Unit 1 Principles Report', course: 'Level 3 Management Diploma', date: '08 Sep 2026', status: 'Graded (92%)' }
+  ];
+
+  tbody.innerHTML = items.map(i => `
+    <tr>
+      <td><strong>${esc(i.name)}</strong></td>
+      <td>${esc(i.title)}</td>
+      <td>${esc(i.course)}</td>
+      <td>${esc(i.date)}</td>
+      <td><span class="deadline-urgency ${i.status.includes('Pending') ? 'urgent' : 'ok'}">${esc(i.status)}</span></td>
+      <td>
+        <button class="btn-primary" style="padding:4px 10px;font-size:.76rem;" data-action="review" data-name="${esc(i.name)}" data-title="${esc(i.title)}">Evaluate →</button>
+      </td>
+    </tr>`).join('');
+}
+
+// One delegated handler instead of string-built onclick="" attributes
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const d = el.dataset;
+  switch (d.action) {
+    case 'view-students': switchAdminSection('students'); break;
+    case 'review': openReviewModal(d.name, d.title); break;
+    case 'edit-student': LMS.showToast(`Editing ${d.name}...`, 'info'); break;
+    case 'archive-student':
+      if (confirmArchive(d.name)) LMS.showToast(`${d.name} archived (demo)`, 'error');
+      break;
+    case 'edit-syllabus': LMS.showToast(`Editing ${d.code} syllabus...`, 'info'); break;
+  }
+});
+
+function confirmArchive(name) {
+  // Two-click confirmation instead of a blocking dialog
+  const key = 'archive:' + name;
+  if (confirmArchive.pending === key) { confirmArchive.pending = null; return true; }
+  confirmArchive.pending = key;
+  LMS.showToast(`Click the bin again to archive ${name}.`, 'info');
+  setTimeout(() => { if (confirmArchive.pending === key) confirmArchive.pending = null; }, 4000);
+  return false;
+}
+
+function openReviewModal(student, title) {
+  document.getElementById('reviewStudentName').textContent = student;
+  document.getElementById('reviewTitle').textContent = title;
+  openModal('reviewModal');
+}
+
+function submitGradeReview() {
+  LMS.showToast('Grade and feedback submitted successfully!', 'success');
+  closeModal('reviewModal');
+}
+
+function handleAddStudent(e) {
+  e.preventDefault();
+  const name = document.getElementById('newStudentName').value.trim().slice(0, 80);
+  if (!name) return;
+  LMS.showToast(`New student account created for ${name}! (demo)`, 'success');
+  closeModal('addStudentModal');
+}
+
+function filterAdminData(q) {
+  const term = String(q).toLowerCase().trim().slice(0, 100);
+  document.querySelectorAll('#fullStudentsBody tr, #overviewStudentsBody tr, #fullAssignmentsBody tr').forEach(tr => {
+    tr.style.display = !term || tr.textContent.toLowerCase().includes(term) ? '' : 'none';
+  });
+}
+
+function openModal(id) {
+  document.getElementById(id)?.classList.add('show');
+}
+function closeModal(id) {
+  document.getElementById(id)?.classList.remove('show');
+}
+
+function toggleUserDropdown(e) {
+  e.stopPropagation();
+  document.getElementById('userDropdown')?.classList.toggle('show');
+}
+document.addEventListener('click', () => {
+  document.getElementById('userDropdown')?.classList.remove('show');
+});
+
+function markAllNotificationsRead() {
+  document.querySelector('.notif-dot').style.display = 'none';
+  LMS.showToast('Admin notifications marked as read', 'success');
+}
+</script>
+</body>
+</html>

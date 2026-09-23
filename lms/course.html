@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Course Overview - London UK Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+  <link rel="stylesheet" href="lms.css?v=20260915b">
+  <link rel="icon" type="image/png" href="../favicon.png">
+</head>
+<body>
+<div class="lms-app">
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo-area">
+      <a href="../index.html" class="sidebar-logo-link" title="Return to Main Website"><img src="../lauk-logo.png?v=2" width="1278" height="240" alt="LAUK" class="sidebar-logo" onerror="this.style.display='none';document.getElementById('sidebarMark').style.display='flex'"></a>
+      <div id="sidebarMark" style="display:none;align-items:center;gap:10px;">
+        <div class="sidebar-brand-mark">L</div>
+        <div><div class="sidebar-brand-name">London UK</div><div class="sidebar-brand-sub">ACADEMY</div></div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-section">MAIN</div>
+      <div class="nav-item" data-page="dashboard" onclick="window.location='dashboard.html'">
+        <span class="nav-item-icon">📊</span> Overview
+      </div>
+      <div class="nav-item active" data-page="courses" onclick="window.location='dashboard.html#my-courses'">
+        <span class="nav-item-icon">📚</span> My Courses
+      </div>
+      <div class="nav-item" data-page="grades" onclick="window.location='dashboard.html'">
+        <span class="nav-item-icon">📈</span> Grades & Progress
+      </div>
+      <div class="nav-item" data-page="lessons" onclick="startFirstLesson()">
+        <span class="nav-item-icon">▶️</span> Current Lesson
+      </div>
+
+      <div class="sidebar-nav-section">LEARNING TOOLS</div>
+      <div class="nav-item" data-page="assignments" onclick="window.location='dashboard.html'">
+        <span class="nav-item-icon">📝</span> Assignments <span class="nav-badge">2</span>
+      </div>
+      <div class="nav-item" data-page="resources" onclick="window.location='dashboard.html'">
+        <span class="nav-item-icon">📁</span> Course Resources
+      </div>
+      <div class="nav-item" data-page="messages" onclick="window.location='dashboard.html'">
+        <span class="nav-item-icon">💬</span> Tutor Chat <span class="nav-badge">1</span>
+      </div>
+      <div class="nav-item" data-page="settings" onclick="window.location='dashboard.html'">
+        <span class="nav-item-icon">⚙️</span> Settings
+      </div>
+    </nav>
+
+    <div class="sidebar-user" data-logout title="Click to Log Out" style="cursor:pointer;">
+      <div class="sidebar-avatar" data-user-avatar>ST</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" data-user-name>Sarah Thompson</div>
+        <div class="sidebar-user-role" data-user-role>Student</div>
+      </div>
+      <div style="font-size:1.1rem;color:#8593AC;margin-left:auto;">🚪</div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="document.getElementById('sidebar').classList.remove('open');this.classList.remove('show')"></div>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show')">☰</button>
+      <div>
+        <div class="topbar-title" id="topbarTitle">Course Details</div>
+        <div class="topbar-breadcrumb"><a href="dashboard.html" style="color:var(--gold);">Dashboard</a> / <span id="topbarCrumb">Course</span></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-icon-btn" id="notifBtn" style="position:relative;" title="Notifications">
+        🔔<span class="notif-dot"></span>
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-panel-header">Notifications</div>
+          <div class="notif-item"><div class="notif-dot-small"></div><div><div class="notif-text">New material uploaded for this course.</div><div class="notif-time">1 hour ago</div></div></div>
+        </div>
+      </div>
+      <div class="topbar-avatar" data-user-avatar>ST</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-body" id="pageBody" style="padding-block:32px;">
+      <div style="text-align:center;padding:60px;color:var(--slate);">Loading course details...</div>
+    </div>
+  </main>
+</div>
+
+<script src="lms.js?v=20260915b"></script>
+<script>
+const esc = LMS.escapeHtml;
+const session = LMS.requireAuth();
+if (session) {
+  LMS.setupSidebar('courses');
+
+  const courseId = parseInt(LMS.getParam('id') || '1', 10);
+  const course = LMS.COURSES.find(c => c.id === courseId);
+  if (!course) {
+    document.getElementById('pageBody').innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-title">Course not found</div><a class="btn-primary" style="margin-top:16px;display:inline-flex;" href="dashboard.html">Return to Dashboard</a></div>';
+  } else {
+    renderCourse(course);
+  }
+}
+
+function renderCourse(course) {
+  const pct = LMS.getCourseProgress(course.id);
+  document.getElementById('topbarTitle').textContent = course.title;
+  document.getElementById('topbarCrumb').textContent = course.title;
+
+  const allLessons = course.modules.flatMap(m => m.items);
+  const done = allLessons.filter(l => LMS.isLessonComplete(course.id, l.id)).length;
+  const disciplineName = course.discipline ? (course.discipline.charAt(0).toUpperCase() + course.discipline.slice(1)) : 'General';
+
+  document.getElementById('pageBody').innerHTML = `
+    <!-- Course Hero Banner -->
+    <div class="course-hero">
+      <div class="course-hero-eyebrow">${esc(course.emoji)} ${esc(course.level)} &nbsp;•&nbsp; ${esc(disciplineName)}</div>
+      <h1 class="course-hero-title">${esc(course.title)}</h1>
+      <div class="course-hero-meta">
+        <span>👨‍🏫 ${esc(course.instructor)}</span>
+        <span>⏱️ ${esc(course.duration)}</span>
+        <span>📖 ${course.lessons} lessons</span>
+        <span>📜 ${course.credits} credits</span>
+      </div>
+      <p style="color:var(--slate-light);font-size:.95rem;max-width:650px;margin-bottom:24px;position:relative;z-index:1;line-height:1.6;">${esc(course.description)}</p>
+      <div class="course-hero-actions">
+        <button class="btn-primary" onclick="startFirstLesson()">▶ ${pct > 0 ? 'Continue Learning' : 'Start Course'}</button>
+        <button class="btn-secondary" onclick="LMS.showToast('Course Syllabus PDF downloaded!', 'success')">📥 Download Syllabus</button>
+      </div>
+    </div>
+
+    <!-- Course Layout Grid -->
+    <div class="course-layout" style="display:grid;grid-template-columns:1fr 340px;gap:24px;margin-top:28px;">
+      <!-- Syllabus Column -->
+      <div>
+        <div class="section-header" style="margin-bottom:16px;">
+          <div>
+            <div class="section-header-title">Course Syllabus</div>
+            <div class="section-header-sub">Units & Learning Modules</div>
+          </div>
+          <span style="font-size:.85rem;color:var(--gold);font-weight:700;">${done}/${allLessons.length} lessons complete</span>
+        </div>
+        <div id="syllabus" style="display:flex;flex-direction:column;gap:14px;"></div>
+      </div>
+
+      <!-- Sidebar Card -->
+      <div class="card course-sidebar-card" style="height:fit-content;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div class="course-sidebar-ring" id="courseRing" style="width:120px;height:120px;margin:0 auto;"></div>
+        </div>
+        <div class="course-sidebar-stats" style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
+          <div class="sidebar-stat-row" style="display:flex;justify-content:space-between;font-size:.85rem;"><span style="color:var(--slate-light);">📖 Total Lessons</span><strong style="color:#fff;">${course.lessons}</strong></div>
+          <div class="sidebar-stat-row" style="display:flex;justify-content:space-between;font-size:.85rem;"><span style="color:var(--slate-light);">✅ Lessons Completed</span><strong style="color:var(--success);">${done}</strong></div>
+          <div class="sidebar-stat-row" style="display:flex;justify-content:space-between;font-size:.85rem;"><span style="color:var(--slate-light);">⏱️ Duration</span><strong style="color:#fff;">${esc(course.duration)}</strong></div>
+          <div class="sidebar-stat-row" style="display:flex;justify-content:space-between;font-size:.85rem;"><span style="color:var(--slate-light);">📜 Credits</span><strong style="color:var(--gold);">${course.credits}</strong></div>
+          <div class="sidebar-stat-row" style="display:flex;justify-content:space-between;font-size:.85rem;"><span style="color:var(--slate-light);">🎓 Level</span><strong style="color:#fff;">${esc(course.level)}</strong></div>
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="startFirstLesson()">▶ ${pct > 0 ? 'Continue Learning' : 'Start Now'}</button>
+        
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);">
+          <div style="font-size:.85rem;font-weight:700;margin-bottom:12px;color:var(--gold);">📁 Course Resources</div>
+          ${['Course Handbook PDF', 'Assessment Criteria', 'Harvard Referencing Guide', 'Portfolio Template'].map(r=>`
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.83rem;cursor:pointer;color:var(--slate-light);" 
+              onclick="LMS.showToast('Downloading ${r}...', 'success')"
+              onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--slate-light)'">
+              📥 ${r}
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Render ring
+  LMS.createRing(document.getElementById('courseRing'), pct, 120, 10);
+
+  // Render syllabus accordion
+  const syllabus = document.getElementById('syllabus');
+  course.modules.forEach((mod, mi) => {
+    const modDone = mod.items.filter(l => LMS.isLessonComplete(course.id, l.id)).length;
+    const div = document.createElement('div');
+    div.className = 'accordion-item' + (mi === 0 ? ' open' : '');
+    div.style.cssText = 'background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;';
+    div.innerHTML = `
+      <div class="accordion-header" style="padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:rgba(255,255,255,.02);" onclick="this.parentElement.classList.toggle('open')">
+        <div>
+          <div class="accordion-title" style="font-weight:700;color:#fff;font-size:.95rem;">${esc(mod.title)}</div>
+          <div class="accordion-meta" style="font-size:.78rem;color:var(--slate-light);margin-top:2px;">${modDone}/${mod.items.length} lessons complete</div>
+        </div>
+        <span class="accordion-icon" style="font-size:.9rem;color:var(--gold);">▼</span>
+      </div>
+      <div class="accordion-body" style="padding:10px 16px 16px;display:flex;flex-direction:column;gap:8px;">
+        ${mod.items.map(lesson => {
+          const lDone = LMS.isLessonComplete(course.id, lesson.id);
+          const typeIcons = { video: '📹', reading: '📖', quiz: '🧠' };
+          return `
+            <div class="lesson-row" style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(255,255,255,.02);border-radius:8px;cursor:pointer;transition:all .2s ease;" 
+                 onclick="window.location='lesson.html?course=${encodeURIComponent(course.id)}&lesson=${encodeURIComponent(lesson.id)}'"
+                 onmouseover="this.style.background='rgba(201,168,76,.1)'" onmouseout="this.style.background='rgba(255,255,255,.02)'">
+              <div class="lesson-icon" style="width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:${lDone ? 'rgba(52,199,123,.2)' : 'rgba(255,255,255,.06)'};font-size:.9rem;">
+                ${lDone ? '✅' : typeIcons[lesson.type] || '📖'}
+              </div>
+              <span class="lesson-row-title" style="flex:1;font-size:.88rem;color:#fff;font-weight:500;">${esc(lesson.title)}</span>
+              <span class="lesson-row-duration" style="font-size:.78rem;color:var(--slate-light);">${esc(lesson.duration)}</span>
+              <span style="font-size:.85rem;color:var(--success);">${lDone ? '✓ Completed' : ''}</span>
+            </div>`;
+        }).join('')}
+      </div>`;
+    syllabus.appendChild(div);
+  });
+}
+
+function startFirstLesson() {
+  const courseId = parseInt(LMS.getParam('id') || '1', 10);
+  const course = LMS.COURSES.find(c => c.id === courseId);
+  if (!course) return;
+  const allLessons = course.modules.flatMap(m => m.items);
+  const next = allLessons.find(l => !LMS.isLessonComplete(courseId, l.id)) || allLessons[0];
+  window.location.href = `lesson.html?course=${encodeURIComponent(courseId)}&lesson=${encodeURIComponent(next.id)}`;
+}
+</script>
+</body>
+</html>
