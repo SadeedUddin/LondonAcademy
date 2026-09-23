@@ -513,3 +513,16 @@
     });
 
 })();
+
+/* ---------- page loader: fade out once the page has loaded ---------- */
+(function () {
+    var el = document.getElementById('pageLoader');
+    if (!el) return;
+    function hide() {
+        el.classList.add('is-done');
+        setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 600);
+    }
+    if (document.readyState === 'complete') hide();
+    else window.addEventListener('load', hide);
+    setTimeout(hide, 5000); // never block the page for more than 5s
+})();
