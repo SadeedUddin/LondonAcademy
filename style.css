@@ -3910,3 +3910,52 @@ header.hero::after {
 @media (prefers-reduced-motion: reduce) {
     section::before, section::after, header.hero::before, header.hero::after { animation: none; }
 }
+
+/* Footer social links */
+.footer-social { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.3rem; }
+.social-link {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: #C3CDDF;
+    border: 1px solid rgba(201, 162, 39, 0.35);
+    background: rgba(255, 255, 255, 0.03);
+    transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease;
+}
+.social-link svg { width: 17px; height: 17px; fill: currentColor; }
+.social-link:hover,
+.social-link:focus-visible {
+    color: #14100A;
+    background: var(--gold);
+    border-color: var(--gold);
+    transform: translateY(-3px);
+}
+
+/* Home "Popular courses": six compact cards, one per category */
+.featured-six .course-list.cc-row {
+    grid-auto-columns: calc((100% - 5 * 1rem) / 6);
+    gap: 1rem;
+}
+.featured-six .cc-row .cc-card { --tab: 22px; }
+.featured-six .cc-row .cc-card .cc-cat { font-size: 0.52rem; padding: 0 0.65rem; letter-spacing: 0.06em; }
+.featured-six .cc-row .cc-card .cc-thumb { margin: 0.55rem 0.55rem 0; border-radius: 10px; }
+.featured-six .cc-row .cc-card .cc-badge { font-size: 0.6rem; bottom: 0.5rem; left: 0.6rem; }
+.featured-six .cc-row .cc-card .cc-body { padding: 0.85rem 0.9rem 0.9rem; }
+.featured-six .cc-row .cc-card h3 { font-size: 1.02rem; line-height: 1.25; }
+.featured-six .cc-row .cc-card p { font-size: 0.72rem; margin-top: 0.45rem; }
+.featured-six .cc-row .cc-card .cc-go { font-size: 0.58rem; padding-top: 0.85rem; gap: 0.45rem; }
+.featured-six .cc-row .cc-card .cc-go::before { margin-right: 16px; }
+@media (max-width: 1280px) { .featured-six .course-list.cc-row { grid-auto-columns: calc((100% - 3 * 1rem) / 4); } }
+@media (max-width: 1000px) { .featured-six .course-list.cc-row { grid-auto-columns: calc((100% - 2 * 1rem) / 3); } }
+@media (max-width: 760px)  { .featured-six .course-list.cc-row { grid-auto-columns: calc((100% - 1rem) / 2); } }
+@media (max-width: 560px)  { .featured-six .course-list.cc-row { grid-auto-columns: 72%; } }
+/* Popular courses: 4 cards across on desktop */
+.featured-six .course-list.cc-row { grid-auto-columns: calc((100% - 3 * 1.25rem) / 4); gap: 1.25rem; }
+.featured-six .cc-row .cc-card h3 { font-size: 1.15rem; }
+.featured-six .cc-row .cc-card p { font-size: 0.76rem; }
+.featured-six .cc-row .cc-card .cc-cat { font-size: 0.56rem; }
+@media (max-width: 1180px) { .featured-six .course-list.cc-row { grid-auto-columns: calc((100% - 2 * 1.25rem) / 3); } }
+@media (max-width: 860px)  { .featured-six .course-list.cc-row { grid-auto-columns: calc((100% - 1.25rem) / 2); } }
+@media (max-width: 560px)  { .featured-six .course-list.cc-row { grid-auto-columns: 78%; } }
