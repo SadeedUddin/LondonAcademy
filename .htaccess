@@ -1,0 +1,48 @@
+# ------------------------------------------------------------
+#  London UK Academy - security settings (Apache / cPanel / Hostinger / LiteSpeed)
+# ------------------------------------------------------------
+
+# No directory listings
+Options -Indexes
+
+# Force HTTPS
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Block internal / backup directories entirely (not just from search engines)
+  RewriteCond %{REQUEST_URI} ^/(?:_backup-course-pages|Claude(?:%20|\ )outputs)/ [NC]
+  RewriteRule ^ - [F,L]
+</IfModule>
+
+# Block backups, scripts, archives and hidden files
+<FilesMatch "(?i)(\.(bak|backup|old|orig|save|swp|tmp|zip|rar|7z|tar|gz|ps1|sh|bat|py|md|log|ini|env|sql|docx|xlsx)|_backup|pre_why_backup)$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io mailto:; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+  Header unset X-Powered-By
+</IfModule>
+
+# LMS pages use inline scripts, so they get their own policy and are kept out of search engines
+<If "%{REQUEST_URI} =~ m#^/lms/#">
+  <IfModule mod_headers.c>
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+    Header always set X-Robots-Tag "noindex, nofollow"
+    Header always set Cache-Control "no-store"
+  </IfModule>
+</If>
+
+ServerSignature Off

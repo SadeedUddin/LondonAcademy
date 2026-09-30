@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /lms/
+
+Sitemap: https://londonukacademy.uk/sitemap.xml
