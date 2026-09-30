@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create Account | London UK Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+  <link rel="stylesheet" href="lms.css?v=20260930a">
+  <link rel="stylesheet" href="lauk-register.css?v=1">
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <style>
+    body.reg-page { margin: 0; background: #F7F4EE; color: #101828; }
+    @media (prefers-color-scheme: dark) { body.reg-page { background: #070A11; color: #EDF1F8; } }
+    .reg-fallback { max-width: 420px; margin: 0 auto; padding: 64px 20px; font-family: 'Archivo', system-ui, sans-serif; }
+    .reg-fallback a { color: #C9A227; }
+    #lauk-register .kc-brand { justify-content: center; margin-bottom: 22px; }
+    #lauk-register .kc-brand a { display: block; max-width: 100%; }
+    #lauk-register .kc-brand-logo { height: 56px; width: auto; max-width: 100%; object-fit: contain; }
+
+    /* Page slide between Sign in and Create account (Chrome, Edge, Safari 18.2+; others just navigate) */
+    @view-transition { navigation: auto; }
+    .lauk-back { view-transition-name: auth-back; }
+    ::view-transition-group(*) { animation-duration: 480ms; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+    ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+    @keyframes auth-in-right  { from { transform: translateX(90px);  opacity: 0; } }
+    @keyframes auth-in-left   { from { transform: translateX(-90px); opacity: 0; } }
+    @keyframes auth-out-left  { to   { transform: translateX(-90px); opacity: 0; } }
+    @keyframes auth-out-right { to   { transform: translateX(90px);  opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
+    #lauk-register .kc-card  { view-transition-name: signup-card; }
+    #lauk-register .kc-stage { view-transition-name: key-stage; }
+    ::view-transition-old(signin-card) { animation: auth-out-left 380ms cubic-bezier(0.4, 0, 1, 1) both; }
+    ::view-transition-new(signup-card) { animation: auth-in-right 520ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both; }
+    ::view-transition-new(key-stage)   { animation: auth-in-left 560ms cubic-bezier(0.22, 1, 0.36, 1) 140ms both; }
+  </style>
+</head>
+<body class="reg-page">
+  <a class="lauk-back" href="../index.html">&larr; Back to website</a>
+  <div id="lauk-register" data-logo="../lauk-logo.webp?v=3" data-logo-light="../lauk-logo-light.webp?v=1">
+    <noscript>
+      <div class="reg-fallback">
+        <h1>Create your account</h1>
+        <p>Please turn on JavaScript to create an account, or email <a href="mailto:info@londonukacademy.uk">info@londonukacademy.uk</a>.</p>
+      </div>
+    </noscript>
+  </div>
+
+  <script src="lms.js?v=20260915b"></script>
+  <script>
+    // Already signed in? Go straight to the dashboard.
+    if (window.LMS && LMS.getSession()) window.location.replace('dashboard.html');
+  </script>
+  <script src="lauk-register.js?v=3"></script>
+</body>
+</html>
